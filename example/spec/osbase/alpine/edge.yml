@@ -1,0 +1,106 @@
+engine: apk
+
+## fixme: should we also have an cpu->arch map ?
+arch:
+    - x86
+    - x86_64
+    - aarch64
+    - armhf
+    - armv7
+    - mips64
+    - ppc64le
+    - s390x
+
+mirror: http://dl-cdn.alpinelinux.org/alpine
+branch: edge
+keydir: osbase/alpine/keys
+
+# fixme: list entries don't support substitution yet
+repos:
+    key-files:
+        - osbase/alpine/keys/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+        - osbase/alpine/keys/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+        - osbase/alpine/keys/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub
+    urlsxx:
+        main:      ${mirror}/${branch}/main
+        community: ${mirror}/${branch}/community
+    urls:
+        main:      http://dl-cdn.alpinelinux.org/alpine/edge/main
+        community: http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+
+## optional components that an application image might need
+## the image composer picks them based on the target settings
+## (e.g. GPU)
+components:
+    egl2: ${components::egl-common}
+    egl3: ${components::egl-common}
+    egl-common:
+        description: EGL API and drivers
+        selector: ${PLATFORM::hardware::gpu}
+        choice:
+            intel/i915:     ${components::egl-common::choice::intel}
+            intel/i965:     ${components::egl-common::choice::intel}
+            ati/r200:       ${components::egl-common::choice::ati}
+            ati/r300:       ${components::egl-common::choice::ati}
+            nvidia/nv04:    ${components::egl-common::choice::nouveau}
+            nvidia/nv10:    ${components::egl-common::choice::nouveau}
+            nvidia/nv20:    ${components::egl-common::choice::nouveau}
+            nvidia/nv30:    ${components::egl-common::choice::nouveau}
+            nvidia/nv40:    ${components::egl-common::choice::nouveau}
+            nvidia/nv50:    ${components::egl-common::choice::nouveau}
+            nvidia/nvc00:   ${components::egl-common::choice::nouveau}
+            nvidia/nve00:   ${components::egl-common::choice::nouveau}
+            nvidia/nv110:   ${components::egl-common::choice::nouveau}
+            nvidia/nv130:   ${components::egl-common::choice::nouveau}
+            nvidia/nv140:   ${components::egl-common::choice::nouveau}
+            nvidia/nv160:   ${components::egl-common::choice::nouveau}
+            nvidia/nv170:   ${components::egl-common::choice::nouveau}
+
+            intel:
+                packages:
+                    - mesa-dri-intel
+            ati:
+                packages:
+                    - mesa-dri-ati
+            nouveau:
+                packages:
+                    - mesa-dri-nouveau
+        default:
+            packages:
+                - mesa-dri-softpipe
+
+    vulkan:
+        description: EGL3 API and drivers
+        selector: ${PLATFORM::hardware::gpu}
+        choice:
+            intel/i915:     ${components::vulkan::choice::intel}
+            intel/i965:     ${components::vulkan::choice::intel}
+            ati/r200:       ${components::vulkan::choice::ati}
+            ati/r300:       ${components::vulkan::choice::ati}
+            nvidia/nv04:    ${components::vulkan::choice::nouveau}
+            nvidia/nv10:    ${components::vulkan::choice::nouveau}
+            nvidia/nv20:    ${components::vulkan::choice::nouveau}
+            nvidia/nv30:    ${components::vulkan::choice::nouveau}
+            nvidia/nv40:    ${components::vulkan::choice::nouveau}
+            nvidia/nv50:    ${components::vulkan::choice::nouveau}
+            nvidia/nvc00:   ${components::vulkan::choice::nouveau}
+            nvidia/nve00:   ${components::vulkan::choice::nouveau}
+            nvidia/nv110:   ${components::vulkan::choice::nouveau}
+            nvidia/nv130:   ${components::vulkan::choice::nouveau}
+            nvidia/nv140:   ${components::vulkan::choice::nouveau}
+            nvidia/nv160:   ${components::vulkan::choice::nouveau}
+            nvidia/nv170:   ${components::vulkan::choice::nouveau}
+
+            intel:
+                packages:
+                    - mesa-vulkan-intel
+            ati:
+                packages:
+                    - mesa-vulkan-ati
+            nouveau:
+                packages:
+                    - mesa-vulkan-nouveau
+        default:
+            packages:
+                - mesa-vulkan-softpipe

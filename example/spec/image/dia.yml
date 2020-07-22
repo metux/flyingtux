@@ -1,0 +1,7 @@
+---
+osbase: alpine/edge
+
+os-components:
+    - egl3
+    - vulkan
+#    - butterbrot
