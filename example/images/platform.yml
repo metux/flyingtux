@@ -1,0 +1,20 @@
+---
+## general machine description
+## usually created by base OS installer
+machine:
+    - target: aarch64-linux-gnu
+      type:   emulated
+    - target: arm-linux-gnu
+      type:   emulated
+    - target: arm-linux-gnueabi
+      type:   emulated
+    - target: arm-linux-gnueabihf
+      type:   emulated
+    - target: armeb-linux-gnueabi
+      type:   emulated
+    - target: armeb-linux-gnueabihf
+      type:   emulated
+    - target: x86_64-linux-gnu
+      type:   native
+    - target: i386-linux-gnu
+      type:   fallback

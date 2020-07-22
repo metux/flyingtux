@@ -1,0 +1,30 @@
+Package: gimp
+Version: 2.10.8-2
+Architecture: i386
+Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Installed-Size: 20751
+Depends: libgimp2.0 (>= 2.10.8), libgimp2.0 (<= 2.10.8-z), gimp-data (>= 2.10.8), gimp-data (<= 2.10.8-z), libgdk-pixbuf2.0-0 (>= 2.30.8), xdg-utils, libaa1 (>= 1.4p5), libbabl-0.1-0 (>= 0.1.10), libbz2-1.0, libc6 (>= 2.28), libcairo2 (>= 1.12.2), libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.2.1), libgcc1 (>= 1:3.0), libgegl-0.4-0 (>= 0.4.12), libgexiv2-2 (>= 0.10.6), libglib2.0-0 (>= 2.54.2), libgs9 (>= 8.61.dfsg.1), libgtk2.0-0 (>= 2.24.32), libgudev-1.0-0 (>= 167), libharfbuzz0b (>= 0.6.0), libheif1 (>= 1.1.0), libilmbase23 (>= 2.2.1), libjpeg62-turbo (>= 1.3.1), liblcms2-2 (>= 2.9), liblzma5 (>= 5.1.1alpha+20120614), libmng1 (>= 1.0.10), libmypaint-1.3-0 (>= 1.3.0), libopenexr23, libopenjp2-7 (>= 2.0.0), libpango-1.0-0 (>= 1.29.4), libpangocairo-1.0-0 (>= 1.29.4), libpangoft2-1.0-0 (>= 1.29.4), libpng16-16 (>= 1.6.2-1), libpoppler-glib8 (>= 0.44.0), librsvg2-2 (>= 2.14.4), libstdc++6 (>= 5.2), libtiff5 (>= 4.0.3), libwebp6 (>= 0.5.1), libwebpdemux2 (>= 0.5.1), libwebpmux3 (>= 0.6.1-2), libwmf0.2-7 (>= 0.2.8.4), libx11-6, libxcursor1 (>> 1.1.2), libxext6, libxfixes3, libxmu6, libxpm4, zlib1g (>= 1:1.1.4)
+Recommends: ghostscript
+Suggests: gimp-help-en | gimp-help, gimp-data-extras, gimp-python, gvfs-backends, libasound2
+Breaks: gimp-plugin-registry (<< 7.20140602+nmu1~)
+Replaces: gimp-plugin-registry (<< 7.20140602+nmu1~)
+Section: graphics
+Priority: optional
+Homepage: https://www.gimp.org/
+Description: GNU Image Manipulation Program
+ GIMP is an advanced picture editor. You can use it to edit, enhance, and
+ retouch photos and scans, create drawings, and make your own images.
+ It has a large collection of professional-level editing tools and
+ filters, similar to the ones you might find in Photoshop. Numerous
+ fine-control settings and features like layers, paths, masks, and
+ scripting give you total control over your images.
+ .
+ Many image file formats are supported, including JPEG, Photoshop (.psd),
+ and Paint Shop Pro (.psp) files. It can also be used to scan and print
+ photos.
+ .
+ To open files remotely (like over HTTP), install the gvfs-backends
+ package.
+ .
+ To use a MIDI device (like a musical keyboard) as an input controller in GIMP,
+ install libasound2 and read the how-to at /usr/share/doc/gimp/README.MIDI

@@ -1,0 +1,21 @@
+---
+application: telegram
+category: messaging
+platform: flyingtux-gnu-linux-0
+image: telegram-current
+version: current
+
+file-capabilities:
+    - open-multiple
+    - open-ro
+    - open-from-fd
+
+file-operations:
+    edit:
+        - image/jpeg
+        - image/png
+        - image/xcf
+    show:
+        - image/*
+
+protocols

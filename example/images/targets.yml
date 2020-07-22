@@ -1,0 +1,599 @@
+---
+aarch64-linux-gnu:
+    kernel: linux
+    ia: ARM64
+    endian: little
+    wordsize: 64
+    description: aarch64 Linux Platform
+
+AAPCS64 (ARM IHI 005A)1
+ELF for the ARM 64-bit Architecture2
+
+aarch64_be-linux-gnu
+
+linux
+
+ARM64
+
+big
+
+64
+
+aarch64 Linux Platform
+
+AAPCS64 (ARM IHI 005A)1
+ELF for the ARM 64-bit Architecture2
+
+aarch64-linux-gnu_ilp32
+
+linux
+
+ARM64
+
+little
+
+32
+
+aarch64 Linux Platform
+
+aarch64_be-linux-gnu_ilp32
+
+linux
+
+ARM64
+
+big
+
+32
+
+aarch64 Linux Platform
+
+alpha-linux-gnu
+
+linux
+
+Alpha
+
+little
+
+64
+
+glibc, Tru64 calling standard
+
+Tru64 Calling Standard3
+
+arc-linux-gnu
+
+linux
+
+ARCv2
+
+little
+
+32
+
+glibc Linux hard-float
+
+(ARC v2 ABI)45
+
+arm-linux-gnu
+
+linux
+
+ARM
+
+little
+
+32
+
+Old ARM ABI
+
+APCS (ARM DUI 0041 chapter 9)6
+
+arm-linux-gnueabi
+
+linux
+
+ARM
+
+little
+
+32
+
+ARM EABI, soft-float
+
+AAPCS (ARM IHI 0042D)7
+ARM GNU/Linux ABI Supplement8
+
+arm-linux-gnueabihf
+
+linux
+
+ARM
+
+little
+
+32
+
+ARM EABI, hard-float
+
+AAPCS (ARM IHI 0042D)7 and
+XXXXX (TBD)
+
+armeb-linux-gnueabi
+
+linux
+
+ARM
+
+big
+
+32
+
+ARM EABI, soft-float
+
+AAPCS (ARM IHI 0042D)7
+ARM GNU/Linux ABI Supplement8
+
+armeb-linux-gnueabihf
+
+linux
+
+ARM
+
+big
+
+32
+
+ARM EABI, hard-float
+
+AAPCS (ARM IHI 0042D)7 and
+XXXXX (TBD)
+
+hppa-linux-gnu
+
+linux
+
+PA-RISC
+
+big
+
+32
+
+PA-RISC Linux 32-bit ELF
+
+parisc-linux toolchain documents9
+
+i386-gnu
+
+Hurd
+
+IA-32
+
+little
+
+32
+
+Hurd/IA-32
+
+ia32 functions calls10
+LSB Bug 326811
+OS interface XXXXX undocumented
+
+i386-linux-gnu
+
+linux
+
+IA-32
+
+little
+
+32
+
+LSB IA32
+
+SCO Developer Specifications12
+Intel386 psABI10
+LSB Core-IA3213
+LSB Bug 326811
+
+ia64-linux-gnu
+
+linux
+
+IA-64
+
+little
+
+64
+
+LSB IA64
+
+Intel Itanium SysV psABI14
+LSB Core-IA6415
+
+i386-kfreebsd-gnu
+
+FreeBSD
+
+IA-32
+
+little
+
+32
+
+glibc kFreeBSD IA-32
+
+XXXXX undocumented
+
+loongarch64-linux-gnu
+
+linux
+
+loongarch64
+
+little
+
+64
+
+glibc Linux loongarch64
+
+XXXXX undocumented
+
+m68k-linux-gnu
+
+linux
+
+MC68000
+
+big
+
+32
+
+m68k SysV ABI
+
+ISBN: 978-0138776633
+
+mips-linux-gnu
+
+linux
+
+MIPS32r2+FPXX
+
+big
+
+32
+
+MIPS o32 ABI
+
+MIPS psABI1617
+
+mipsel-linux-gnu
+
+linux
+
+MIPS2(MIPS32r2 soon)+FPXX
+
+little
+
+32
+
+MIPS o32 ABI
+
+MIPS psABI1617
+
+mips64-linux-gnuabin32
+
+linux
+
+MIPS64r2
+
+big
+
+32
+
+MIPS n32 ABI
+
+MIPSpro N32 ABI Handbook1618
+
+mips64el-linux-gnuabin32
+
+linux
+
+MIPS64r2
+
+little
+
+32
+
+MIPS n32 ABI
+
+MIPSpro N32 ABI Handbook1618
+
+mips64-linux-gnuabi64
+
+linux
+
+MIPS64r2
+
+big
+
+64
+
+MIPS 64-bit ABI
+
+MIPSpro N64 ABI Handbook1618
+
+mips64el-linux-gnuabi64
+
+linux
+
+MIPS64r2
+
+little
+
+64
+
+MIPS 64-bit ABI
+
+MIPSpro N64 ABI Handbook1618
+
+mipsisa32r6-linux-gnu
+
+linux
+
+MIPS32r6
+
+big
+
+32
+
+MIPS o32 ABI
+
+MIPS psABI1617
+
+mipsisa32r6el-linux-gnu
+
+linux
+
+MIPS32r6
+
+little
+
+32
+
+MIPS o32 ABI
+
+MIPS psABI1617
+
+mipsisa64r6-linux-gnuabin32
+
+linux
+
+MIPS64r6
+
+big
+
+32
+
+MIPS n32 ABI
+
+MIPSpro N32 ABI Handbook1618
+
+mipsisa64r6el-linux-gnuabin32
+
+linux
+
+MIPS64r6
+
+little
+
+32
+
+MIPS n32 ABI
+
+MIPSpro N32 ABI Handbook1618
+
+mipsisa64r6-linux-gnuabi64
+
+linux
+
+MIPS64r6
+
+big
+
+64
+
+MIPS 64-bit ABI
+
+MIPSpro N64 ABI Handbook1618
+
+mipsisa64r6el-linux-gnuabi64
+
+linux
+
+MIPS64r6
+
+little
+
+64
+
+MIPS 64-bit ABI
+
+MIPSpro N64 ABI Handbook1618
+
+powerpc-linux-gnu
+
+linux
+
+PowerPC
+
+big
+
+32
+
+LSB PPC32
+
+PowerPC psABI19
+LSB Core-PPC3220
+
+powerpc-linux-gnuspe
+
+linux
+
+PowerPC
+
+big
+
+32
+
+PowerPC e500 (SPE)
+
+Power 32-bit ABI Supplement 1.0 Linux21
+
+powerpc64-linux-gnu
+
+linux
+
+PowerPC
+
+big
+
+64
+
+LSB PPC64
+
+64-bit PowerPC ELF psABI22
+LSB Core-PPC6423
+
+powerpc64le-linux-gnu
+
+linux
+
+PowerPC
+
+little
+
+64
+
+??
+
+??
+
+riscv64-linux-gnu
+
+linux
+
+RISC-V
+
+little
+
+64
+
+RV64G Linux Platform
+
+RISC-V ELF psABI 24
+
+s390-linux-gnu
+
+linux
+
+System/390
+
+big
+
+32
+
+LSB S390
+
+S/390 ELF psABI25
+LSB Core-S39026
+
+s390x-linux-gnu
+
+linux
+
+z/Architecture
+
+big
+
+64
+
+LSB S390X
+
+zSeries ELF psABI27
+LSB Core-S390X28
+
+sh4-linux-gnu
+
+linux
+
+SH-4
+
+little
+
+32
+
+glibc Linux SH-4
+with fpu, double pervading
+
+SH-4 Generic and Specific ABI29
+
+sparc-linux-gnu
+
+linux
+
+SPARC
+
+big
+
+32
+
+glibc Linux sparc32
+
+SPARC psABI30
+
+sparc64-linux-gnu
+
+linux
+
+SPARC64
+
+big
+
+64
+
+glibc Linux sparc64
+
+SPARCv9 psABI31
+
+x86_64-kfreebsd-gnu
+
+FreeBSD
+
+x86_64
+
+little
+
+64
+
+glibc kFreeBSD x86-64
+
+XXXXX undocumented
+
+x86_64-linux-gnu
+
+linux
+
+x86_64
+
+little
+
+64
+
+LSB AMD64
+
+AMD64 psABI32
+LSB Core-AMD6433
+
+x86_64-linux-gnux32

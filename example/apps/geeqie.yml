@@ -1,0 +1,21 @@
+---
+application: geequi
+category: graphics
+platform: flyingtux-gnu-linux-0
+image: gimp-2.10
+version: 2.10
+
+attributes:
+    - can-open-multiple
+
+file-capabilities:
+    - open-ro
+    - open-from-fd
+
+## services provided by this app
+provides:
+    gallery:
+        protocol: gallery
+    file-view:
+        mime-types:
+            - image/*
