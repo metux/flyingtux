@@ -1,0 +1,8 @@
+root:x:0:
+daemon:x:1:
+tty:x:5:
+sudo:x:27:
+audio:x:29:
+shadow:x:42:
+nogroup:x:65534:
+app:x:1000:

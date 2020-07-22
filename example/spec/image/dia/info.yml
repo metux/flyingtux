@@ -1,0 +1,71 @@
+---
+version: 0.97.3-r1
+
+rootfs:
+    osbase: alpine/edge
+    os-components:
+        - baselayout
+        - base-fonts-ttf
+    packages:
+        - dia
+    repos:
+        keys:
+            - alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+    tmpdirs:
+        - /home/app/.local/share/
+    post-clean:
+        remove:
+            - /usr/share/udhcpc
+            - /usr/share/p11-kit
+            - /usr/share/gettext
+            - /usr/share/X11/XErrorDB
+            - /usr/bin/xmlwf
+            - /usr/bin/update-mime-database
+            - /usr/bin/pkgconf
+            - /usr/bin/p11-kit
+            - /usr/bin/fribidi
+            - /usr/bin/gapplication
+            - /usr/bin/gdbus
+            - /usr/bin/gdk-pixbuf-csource
+            - /usr/bin/gdk-pixbuf-pixdata
+            - /usr/bin/gdk-pixbuf-query-loaders
+            - /usr/bin/gdk-pixbuf-thumbnailer
+            - /usr/bin/gio
+            - /usr/bin/gio-querymodules
+            - /usr/bin/glib-compile-schemas
+            - /usr/bin/gsettings
+            - /usr/bin/gtk-query-immodules-2.0
+            - /usr/bin/gtk-update-icon-cache
+            - /usr/bin/fc-cache
+            - /usr/bin/fc-cat
+            - /usr/bin/fc-conflist
+            - /usr/bin/fc-list
+            - /usr/bin/fc-match
+            - /usr/bin/fc-pattern
+            - /usr/bin/fc-query
+            - /usr/bin/fc-scan
+            - /usr/bin/fc-validate
+            - /usr/bin/mkfontdir
+            - /usr/bin/mkfontscale
+            - /usr/bin/pkg-config
+            - /usr/libexec/p11-kit
+            - /usr/lib/gtk-2.0/2.10.0/immodules/im-cyrillic-translit.so
+            - /usr/lib/gtk-2.0/2.10.0/immodules/im-thai.so
+            - /usr/lib/gtk-2.0/2.10.0/printbackends/libprintbackend-lpr.so
+            - /usr/lib/gtk-2.0/modules/libferret.so
+            - /usr/lib/girepository-1.0
+
+os-services:
+    x11:
+        required: yes
+    temp-homedir:
+        required: yes
+    user-documents:
+        required: yes
+    user-pictures:
+        required: no
+    service-dir:
+        required: yes
+
+command:
+    - /usr/bin/dia
