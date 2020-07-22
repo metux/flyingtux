@@ -1,0 +1,14 @@
+publish object protocol
+
+This protocol is used for publishing objects, eg. within messengers,
+social media, blogs, etc.
+
+Initiator: applications that want to publish an object
+Target:    applications that are capable of publishing objects
+
+Object types:
+    - files:
+        by mimetype
+    - opaque URLs
+        limited by mimetypes or url patterns
+    - streams (fds)

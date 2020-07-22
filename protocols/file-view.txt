@@ -1,0 +1,4 @@
+protocol: file-view
+description:
+    - show a specific file, passed via FD
+    - accepts several sets of mime types
