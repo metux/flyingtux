@@ -1,0 +1,6 @@
+application startup process:
+
+    * setup base image / chroot
+    * setup namespaces
+        * mount external directories
+    * 
