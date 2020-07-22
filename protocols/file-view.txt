@@ -2,3 +2,16 @@ protocol: file-view
 description:
     - show a specific file, passed via FD
     - accepts several sets of mime types
+
+spec:
+    messages:
+        file_view_req:
+            playload:
+                - name: title
+                  type: string
+                - name: mimetype
+                  type: string
+                - name: filename
+                  type: string
+                - name: file
+                  type: fd
