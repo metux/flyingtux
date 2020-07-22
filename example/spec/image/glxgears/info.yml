@@ -1,0 +1,99 @@
+---
+version: 92.0.4515.107-r0
+
+rootfs:
+    osbase: alpine/edge
+    os-components:
+        - gles2
+    packages:
+        - mesa-demos
+    post-clean:
+        remove:
+            - /usr/share/udhcpc
+            - /usr/share/p11-kit
+            - /usr/share/gettext
+            - /usr/share/X11/XErrorDB
+            - /usr/bin/xmlwf
+            - /usr/bin/update-mime-database
+            - /usr/bin/pkgconf
+            - /usr/bin/p11-kit
+            - /usr/bin/fribidi
+            - /usr/bin/gapplication
+            - /usr/bin/gdbus
+            - /usr/bin/gdk-pixbuf-csource
+            - /usr/bin/gdk-pixbuf-pixdata
+            - /usr/bin/gdk-pixbuf-query-loaders
+            - /usr/bin/gdk-pixbuf-thumbnailer
+            - /usr/bin/gio
+            - /usr/bin/gio-querymodules
+            - /usr/bin/glib-compile-schemas
+            - /usr/bin/gsettings
+            - /usr/bin/gtk-query-immodules-2.0
+            - /usr/bin/gtk-update-icon-cache
+            - /usr/bin/fc-cache
+            - /usr/bin/fc-cat
+            - /usr/bin/fc-conflist
+            - /usr/bin/fc-list
+            - /usr/bin/fc-match
+            - /usr/bin/fc-pattern
+            - /usr/bin/fc-query
+            - /usr/bin/fc-scan
+            - /usr/bin/fc-validate
+            - /usr/bin/mkfontdir
+            - /usr/bin/mkfontscale
+            - /usr/bin/pkg-config
+            - /usr/libexec/p11-kit
+            - /usr/lib/gtk-2.0/2.10.0/immodules/im-cyrillic-translit.so
+            - /usr/lib/gtk-2.0/2.10.0/immodules/im-thai.so
+            - /usr/lib/gtk-2.0/2.10.0/printbackends/libprintbackend-lpr.so
+            - /usr/lib/gtk-2.0/modules/libferret.so
+            - /usr/lib/girepository-1.0
+            - /etc/terminfo
+            - /etc/xdg/autostart
+            - /root/.ash_history
+            - /usr/bin/broadwayd
+            - /usr/bin/flac
+            - /usr/bin/metaflac
+            - /usr/bin/mpicalc
+            - /usr/bin/gpg-error
+            - /usr/bin/gtk-builder-tool
+            - /usr/bin/gtk-encode-symbolic-svg
+            - /usr/bin/gtk-launch
+            - /usr/bin/gtk-query-immodules-3.0
+            - /usr/bin/gtk-query-settings
+            - /usr/bin/gtk3-icon-browser
+            - /usr/bin/hmac256
+            - /usr/bin/lame
+            - /usr/bin/xdg-desktop-icon
+            - /usr/bin/xdg-desktop-menu
+            - /usr/bin/xdg-email
+            - /usr/bin/xdg-icon-resource
+            - /usr/bin/xdg-mime
+            - /usr/bin/xdg-open
+            - /usr/bin/xdg-screensaver
+            - /usr/bin/xdg-settings
+            - /usr/bin/xprop
+            - /usr/bin/xset
+            - /usr/bin/xsltproc
+            - /usr/bin/yat2m
+            - /usr/libexec/at-spi-bus-launcher
+            - /usr/libexec/at-spi2-registryd
+            - /usr/share/defaults/at-spi2
+            - /usr/share/glib-2.0/schemas
+            - /usr/share/gtk-3.0/valgrind
+            - /usr/share/mime
+            - /usr/share/themes
+            - /usr/share/xcb
+
+os-services:
+    x11:
+        required: yes
+    temp-homedir:
+        required: yes
+    user-pictures:
+        required: yes
+    dri:
+
+command:
+    - /usr/bin/glxgears
+    - -info

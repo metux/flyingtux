@@ -1,0 +1,242 @@
+engine: apk
+
+base: alpine/common
+
+build-jail:
+    docker:
+        image: alpine
+        init:  /sbin/init
+
+## fixme: should we also have an cpu->arch map ?
+arch:
+    - x86
+    - x86_64
+    - aarch64
+    - armhf
+    - armv7
+    - mips64
+    - ppc64le
+    - s390x
+
+mirror:   http://dl-cdn.alpinelinux.org/alpine
+branch:   edge
+
+# fixme: list entries don't support substitution yet
+repos:
+    keys:
+        - alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub
+        - alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub
+        - alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub
+    urls:
+        - ${mirror}/${branch}/main
+        - ${mirror}/${branch}/community
+
+## optional components that an application image might need
+## the image composer picks them based on the target settings
+## (e.g. GPU)
+components:
+    baselayout:
+        packages:
+            - alpine-baselayout
+
+    base-fonts-ttf:
+        packages:
+            - ttf-dejavu
+
+    base-icon-theme:
+        packages:
+            - adwaita-icon-theme
+
+    mesa-dri-drivers:
+        description: mesa GPU drivers
+        selector: ${PLATFORM::hardware::gpu}
+        choice:
+            intel/i915:     ${components::mesa-dri-drivers::choice::intel}
+            intel/i965:     ${components::mesa-dri-drivers::choice::intel}
+            ati/r200:       ${components::mesa-dri-drivers::choice::ati}
+            ati/r300:       ${components::mesa-dri-drivers::choice::ati}
+            nvidia/nv04:    ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv10:    ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv20:    ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv30:    ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv40:    ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv50:    ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nvc00:   ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nve00:   ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv110:   ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv130:   ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv140:   ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv160:   ${components::mesa-dri-drivers::choice::nouveau}
+            nvidia/nv170:   ${components::mesa-dri-drivers::choice::nouveau}
+
+            intel:
+                packages:
+                    - mesa-dri-intel
+            ati:
+                packages:
+                    - mesa-dri-ati
+            nouveau:
+                packages:
+                    - mesa-dri-nouveau
+        default:
+            packages:
+                - mesa-dri-softpipe
+
+    egl2: ${components::egl-common}
+    egl3: ${components::egl-common}
+    egl-common:
+        depends:
+            - mesa-dri-drivers
+        packages:
+            - mesa-egl
+
+    gles2:
+        description: GLESv2 API
+        depends:
+            - mesa-dri-drivers
+        packages:
+            - mesa-dev
+
+    vulkan:
+        description: Vulkan API
+        selector: ${PLATFORM::hardware::gpu}
+        choice:
+            intel/i915:     ${components::vulkan::choice::intel}
+            intel/i965:     ${components::vulkan::choice::intel}
+            ati/r200:       ${components::vulkan::choice::ati}
+            ati/r300:       ${components::vulkan::choice::ati}
+            nvidia/nv04:    ${components::vulkan::choice::nouveau}
+            nvidia/nv10:    ${components::vulkan::choice::nouveau}
+            nvidia/nv20:    ${components::vulkan::choice::nouveau}
+            nvidia/nv30:    ${components::vulkan::choice::nouveau}
+            nvidia/nv40:    ${components::vulkan::choice::nouveau}
+            nvidia/nv50:    ${components::vulkan::choice::nouveau}
+            nvidia/nvc00:   ${components::vulkan::choice::nouveau}
+            nvidia/nve00:   ${components::vulkan::choice::nouveau}
+            nvidia/nv110:   ${components::vulkan::choice::nouveau}
+            nvidia/nv130:   ${components::vulkan::choice::nouveau}
+            nvidia/nv140:   ${components::vulkan::choice::nouveau}
+            nvidia/nv160:   ${components::vulkan::choice::nouveau}
+            nvidia/nv170:   ${components::vulkan::choice::nouveau}
+
+            intel:
+                packages:
+                    - mesa-vulkan-intel
+            ati:
+                packages:
+                    - mesa-vulkan-ati
+            nouveau:
+                packages:
+                    - mesa-vulkan-nouveau
+        default:
+            packages:
+                - mesa-vulkan-softpipe
+
+post-clean:
+    remove:
+        - /etc/apk/cache
+        - /etc/apk
+        - /etc/fonts/conf.d/README
+        - /etc/logrotate.d/acpid
+        - /etc/network/if-up.d/dad
+        - /etc/pkcs11/pkcs11.conf.example
+        - /etc/udhcpd.conf
+        - /etc/modprobe.d
+        - /etc/termininfo
+        - /etc/fstab
+        - /etc/inputrc
+        - /etc/modules
+        - /etc/motd
+        - /etc/sysctl.conf
+        - /lib/apk/db
+        - /lib/sysctl.d
+        - /sbin/mkmntdirs
+        - /usr/share/aclocal
+        - /usr/share/applications
+        - /usr/share/pkgconfig
+        - /var/cache/fontconfig
+    empty-dirs:
+        - /usr
+        - /etc
+        - /bin
+        - /sbin
+        - /var
+        - /lib
+        - /media
+        - /mnt
+        - /opt
+        - /srv
+    locale-dirs:
+        - /usr/share/X11/locale
+    remove-locales:
+        - am_ET.UTF-8
+        - georgian-academy
+        - km_KH.UTF-8
+        - sr_RS.UTF-8
+        - zh_CN.gb18030
+        - zh_TW.UTF-8
+        - georgian-ps
+        - ko
+        - tatar-cyr
+        - zh_CN.gbk
+        - ibm-cp1133
+        - koi8-c
+        - th_TH
+        - zh_CN.UTF-8
+        - iscii-dev
+        - koi8-r
+        - mulelao-1
+        - th_TH.UTF-8
+        - zh_HK.big5
+        - cs_CZ.UTF-8
+        - isiri-3342
+        - ja
+        - koi8-u
+        - nokhchi-1
+        - tscii-0
+        - zh_HK.big5hkscs
+        - el_GR.UTF-8
+        - ja.JIS
+        - ko_KR.UTF-8
+        - pt_BR.UTF-8
+        - vi_VN.tcvn
+        - zh_HK.UTF-8
+        - ja_JP.UTF-8
+        - pt_PT.UTF-8
+        - vi_VN.viscii
+        - zh_TW
+        - fi_FI.UTF-8
+        - ja.SJIS
+        - ru_RU.UTF-8
+        - zh_CN
+
+tmpdirs:
+    - /var/cache
+    - /run
+    - /tmp
+
+base-user:
+    name:  app
+    home:  /home/app
+    uid:   1000
+    gid:   1000
+    shell: /bin/sh
+
+filesdir: ${DATADIR}/files
+
+rootfs:
+    copy-files:
+        - source: ${DATADIR}/files/passwd
+          dest:   /etc/passwd
+          owner:  0:0
+          mode:   u=rw,go=r
+        - source: ${DATADIR}/files/group
+          dest:   /etc/group
+          owner:  0:0
+          mode:   u=rw,go=r
+        - source: ${DATADIR}/files/shadow
+          dest:   /etc/shadow
+          owner:  0:0
+          mode:   u=rw,go=
+    create-dirs:
+        - /dev
