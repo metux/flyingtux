@@ -1,0 +1,13 @@
+description: x86 intel i7 based notebook
+
+arch:
+    - i686
+    - x86_64
+    - x86
+    - armhf
+
+kernel:
+    linux-generic: prio=10
+
+hardware:
+    gpu: intel/i915

@@ -1,0 +1,16 @@
+platform:       toshiba-portege
+workdir:        ${user.home}/.flyingtux
+build-sysroot:  ${workdir}/sysroot/${image}
+configdir:      ${user.cwd}/cf
+image-dir:      ${workdir}/images
+sysroot-dir:    ${workdir}/sysroot
+
+runtime-jail:
+    engine: docker
+
+build-jail:
+    engine: docker
+
+os-services:
+    x11:
+        display: ${ENV::DISPLAY}
