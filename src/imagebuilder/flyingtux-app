@@ -1,0 +1,6 @@
+#!/usr/bin/python
+
+from sys import argv, exit
+from flyingtux.cmd import run_cmd
+
+exit(run_cmd('cf/target.yml', argv))
