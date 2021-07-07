@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export LD_LIBRARY_PATH=$HOME/.usr/lib
+export PATH="$PATH:$HOME/.usr/sbin"
+
+./imagebuilder "$@"
+
+#/home/nekrad/.usr/sbin/apk add --root=/home/nekrad/src/flyingtux/src/imagebuilder/tmp/images/dia mesa-dri-intel

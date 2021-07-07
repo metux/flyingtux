@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+from sys import argv
+from imgbuilder import builder
+import os
+
+## todo: load the app spec and create a image
+
+def build_image(image_name, platform_name):
+    builder.get({
+        'platform': platform_name,
+        'image': image_name,
+        'workdir': os.getcwd()+'/tmp'
+    }).run()
+
+build_image("dia", "toshiba-portege")
