@@ -59,6 +59,10 @@ class SpecObject(object):
     def __getitem__(self, p):
         return self.get_cf(p)
 
+    """container has_key method"""
+    def has_key(self, p):
+        return self._my_spec.has_key(p)
+
     """set spec object"""
     def set_spec(self, s):
         self._my_spec = LambdaDict(s)
