@@ -4,9 +4,11 @@ from os.path import expanduser
 from metux.util.log import info
 from metux.util.lambdadict import LambdaDict
 from string import Template
+import re
 
 class SubstTemplate(Template):
     idpattern = r"[_a-zA-Z][_a-zA-Z0-9/\.\-\:]*"
+    match_re = re.compile(r'^\$\{([_a-zA-Z][_a-zA-Z0-9/\.\-\:]*)\}$')
 
 class SpecError(Exception):
 
@@ -37,7 +39,12 @@ class SpecObject(object):
 
     """retrieve a config element by path and substitute variables"""
     def get_cf(self, p, dflt = None):
-        return self.cf_substvar(self.get_cf_raw(p, dflt))
+        walk = self._my_spec
+        for pwalk in p.split('::'):
+            walk = self.cf_substvar(walk[pwalk])
+            if walk is None:
+                return dflt
+        return walk
 
     """retrieve a config element as dict"""
     def get_cf_dict(self, p):
@@ -103,6 +110,10 @@ class SpecObject(object):
 
             if var.lower() in ['false', '0', 'f', 'n', 'no']:
                 return False
+
+            res = SubstTemplate.match_re.match(var.strip())
+            if res is not None:
+                return self.get_cf(res.group(1))
 
             new = SubstTemplate(var).substitute(self._my_spec)
             if new == var:
