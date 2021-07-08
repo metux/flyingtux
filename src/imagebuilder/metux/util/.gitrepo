@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:metux/metux_py_util.git
+	branch = master
+	commit = b714bfd80ab8bcb28f679f720733d4dad7394b4f
+	parent = 82fd7e7f46d71b81da37f7940f204a2435c69847
+	method = merge
+	cmdver = 0.4.3
