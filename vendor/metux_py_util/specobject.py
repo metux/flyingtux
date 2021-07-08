@@ -111,3 +111,22 @@ class SpecObject(object):
             return self.cf_substvar(new)
 
         return var
+
+    """create a proxy that accesses sub dicts with path prefix"""
+    def get_subdict(self, prefix):
+        return SpecObjectProxy(self, prefix)
+
+"""[private]"""
+class SpecObjectProxy(object):
+
+    """[private]"""
+    def __init__(self, parent, root):
+        self.my_parent = parent
+        self.my_root = root + '::'
+
+    def __getitem__(self, p):
+        p = self.my_root+p
+        return self.my_parent.__getitem__(p)
+
+    def has_key(self, p):
+        return self.my_parent.has_key(self.my_root+p)
