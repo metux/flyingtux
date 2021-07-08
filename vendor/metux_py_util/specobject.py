@@ -2,11 +2,13 @@ import yaml
 from os import getuid, getcwd, getgid
 from os.path import expanduser
 from metux.util.log import info
-from metux.util.lambdadict import LambdaDict
+from metux.util.lambdadict import LambdaDict, LambdaDictFilter
 from string import Template
+import re
 
 class SubstTemplate(Template):
     idpattern = r"[_a-zA-Z][_a-zA-Z0-9/\.\-\:]*"
+    match_re = re.compile(r'^\$\{([_a-zA-Z][_a-zA-Z0-9/\.\-\:]*)\}$')
 
 class SpecError(Exception):
 
@@ -17,10 +19,38 @@ class SpecError(Exception):
     def get_message(self):
         return self.msg
 
+class SpecObjectFilter(LambdaDictFilter):
+    def __init__(self, specobj):
+        self.specobj = specobj
+
+    """[private]"""
+    def filter_get_res(self, ld, key, value):
+        return self.subst(value)
+
+    def subst(self, value):
+        if isinstance(value, basestring) or (isinstance(value, str)):
+            res = SubstTemplate.match_re.match(value.strip())
+            if res is not None:
+                newkey = res.group(1)
+                return self.subst(self.specobj[newkey])
+
+            if "${" in value:
+                new = SubstTemplate(value).substitute(self.specobj._my_spec)
+                if new == value:
+                    return value
+                else:
+                    return self.subst(new)
+
+        if isinstance(value, list):
+            return [self.subst(x) for x in value]
+
+        return value
+
 class SpecObject(object):
 
     """[private]"""
     def __init__(self, spec):
+        self.filter = SpecObjectFilter(self)
         self.set_spec(spec)
 
     """retrieve a config element by path"""
@@ -37,7 +67,12 @@ class SpecObject(object):
 
     """retrieve a config element by path and substitute variables"""
     def get_cf(self, p, dflt = None):
-        return self.cf_substvar(self.get_cf_raw(p, dflt))
+        walk = self._my_spec
+        for pwalk in p.split('::'):
+            walk = walk[pwalk]
+            if walk is None:
+                return dflt
+        return walk
 
     """retrieve a config element as dict"""
     def get_cf_dict(self, p):
@@ -65,7 +100,7 @@ class SpecObject(object):
 
     """set spec object"""
     def set_spec(self, s):
-        self._my_spec = LambdaDict(s)
+        self._my_spec = LambdaDict(s, None, self.filter)
         self.default_addlist({
             'user.uid':  lambda: str(getuid()),
             'user.gid':  lambda: str(getgid()),
@@ -91,23 +126,3 @@ class SpecObject(object):
     """add a list of default values"""
     def default_addlist(self, attrs):
         self._my_spec.default_addlist(attrs)
-
-    """[private] variable substitution"""
-    def cf_substvar(self, var):
-        if (var is None) or (isinstance(var,bool)) or (isinstance(var, (long, int))):
-            return var
-
-        if isinstance(var, basestring) or (isinstance(var, str)):
-            if var.lower() in ['true', '1', 't', 'y', 'yes']:
-                return True
-
-            if var.lower() in ['false', '0', 'f', 'n', 'no']:
-                return False
-
-            new = SubstTemplate(var).substitute(self._my_spec)
-            if new == var:
-                return var
-
-            return self.cf_substvar(new)
-
-        return var
