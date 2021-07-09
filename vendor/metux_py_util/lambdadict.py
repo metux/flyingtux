@@ -1,8 +1,14 @@
 from inspect import isfunction
 from collections import Mapping
+from metux.util.log import info
+
+class LambdaDictFilter:
+    def filter_get_res(self, ld, key, val):
+        return val
 
 class LambdaDict(dict):
-    def __init__(self, d = None, dflt = None):
+    def __init__(self, d = None, dflt = None, filter = None):
+        self.filter = filter
         self.load_dict(d)
         if dflt is None:
             dflt = {}
@@ -12,7 +18,7 @@ class LambdaDict(dict):
         if d is not None:
             for k,v in d.iteritems():
                 if isinstance(v, Mapping):
-                    dict.__setitem__(self, k, LambdaDict(v))
+                    dict.__setitem__(self, k, LambdaDict(v, None, self.filter))
                 else:
                     dict.__setitem__(self, k, v)
 
@@ -25,23 +31,25 @@ class LambdaDict(dict):
 
         return None
 
-    def __getitem_processed__(self, key):
-        item = self.__getitem_raw__(key)
-
-        if callable(item):
-            return item()
-
-        return item
-
     def __getitem__(self, key):
         if type(key)==tuple or type(key)==list:
-            item = self.__getitem_processed__(key[0])
-            if len(key) == 1:
+
+            # fetch item from dict
+            item = self.__getitem_raw__(key[0])
+
+            # process potential callable
+            if callable(item):
+                item = item()
+
+            # apply filter
+            if self.filter is not None:
+                item = self.filter.filter_get_res(self, key[0], item)
+
+            # break out of end of keys or None
+            if len(key) == 1 or item is None:
                 return item
 
-            if item is None:
-                return None
-
+            # ask our child dict
             return item[key[1:]]
 
         return self.__getitem__(key.split('::'))
@@ -62,7 +70,7 @@ class LambdaDict(dict):
                 raise Exeption("attemted to add default for a sub-dict defined as scalar")
             return sub
 
-        sub = LambdaDict()
+        sub = LambdaDict(None, None, self.filter)
         dict.__setitem__(self, key, sub)
         return sub
 
