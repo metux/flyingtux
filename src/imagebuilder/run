@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CMD=./flyingtux-app
+APP=dia
+
+$CMD build $APP && $CMD deploy $APP && $CMD run $APP
