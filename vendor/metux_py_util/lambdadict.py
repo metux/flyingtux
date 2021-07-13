@@ -94,3 +94,23 @@ class LambdaDict(dict):
         if attrs is not None:
             for key, value in attrs.iteritems():
                 self.default_set(key, value)
+
+    """add item to the dict (not default)"""
+    def __setitem__(self, key, value):
+        if type(key)==tuple or type(key)==list:
+
+            if len(key) == 1: # final leaf
+                dict.__setitem__(self, key[0], value)
+                return
+
+            if dict.has_key(self, key[0]):
+                sub = dict.__getitem__(self, key[0])
+                if not isinstance(sub, dict):
+                    raise Exception("cant add elements to non-dict")
+            else:
+                sub = LambdaDict({}, None, self.filter)
+                dict.__setitem__(self, key[0], sub)
+
+            return sub.__setitem__(key[1:], val)
+
+        return self.__setitem__(key.split('::'), value)
