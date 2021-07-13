@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2021-07-13T13:39:48+02:00
+
+====== Configuration ======
+Angelegt Dienstag 13 Juli 2021
+
+Primary configuration elements are:
+* [[OS-Base]]
+* [[Platform]]
+* [[Image]]
+
+===== build-jail =====
+
+Build jails provide an isolation for running the image build process, where the package manager runs inside.
+
+Required attributes:
+	* build-image: the jail image used for running the build (req. for docker)
+	* build-init: the jail init program used for running the build (req. for docker)
+	* confdir: the config directory prefix — used for as prefix for copying config files (eg. repo keys)

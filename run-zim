@@ -1,0 +1,10 @@
+#!/bin/bash
+
+pwd=`pwd`
+docdir="$pwd/doc"
+
+echo "PWD: $pwd"
+
+cd "$docdir"
+
+zim "$docdir/notebook.zim"
