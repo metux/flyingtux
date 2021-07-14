@@ -130,3 +130,9 @@ class SpecObject(object):
     """add a list of default values"""
     def default_addlist(self, attrs):
         self._my_spec.default_addlist(attrs)
+
+    """check for mandatory attributes"""
+    def check_mandatory(self, attrs):
+        for a in attrs:
+            if not self.has_key(a):
+                raise Exception("missing mandatory attribute %s" % a)
