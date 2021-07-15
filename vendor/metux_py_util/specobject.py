@@ -67,8 +67,11 @@ class SpecObject(object):
 
     """retrieve a config element by path and substitute variables"""
     def get_cf(self, p, dflt = None):
+        if not isinstance(p, list):
+            return self.get_cf(p.split('::'), dflt)
+
         walk = self._my_spec
-        for pwalk in p.split('::'):
+        for pwalk in p:
             walk = walk[pwalk]
             if walk is None:
                 return dflt
