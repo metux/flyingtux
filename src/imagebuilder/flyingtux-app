@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 from sys import argv, exit
-from imgbuilder import builder, target
-from os import getcwd
+from flyingtux.app import builder
+from flyingtux import target
 
 my_target = target.get('cf/target.yml')
 

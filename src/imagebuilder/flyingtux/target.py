@@ -1,8 +1,8 @@
 from metux.util.specobject import SpecObject
 from metux.util.lambdadict import LambdaDict
 from spec import obj_types
-from builder import Builder
-from runner import Runner
+from app.builder import Builder
+from app.runner import Runner
 from os import getcwd, environ
 
 class Target(SpecObject):

@@ -1,8 +1,7 @@
 from metux.util.specobject import SpecObject
 from metux.util.log import info
-import container
-from services import process_os_service
-from os import environ
+from ..container import get as container_get
+from ..services import process_os_service
 
 class Runner(SpecObject):
     def __init__(self, spec):
@@ -19,7 +18,7 @@ class Runner(SpecObject):
             jail.add_tempdirs(p['tempdirs'])
 
     def run(self):
-        jail = container.get({
+        jail = container_get({
             'engine':  self['TARGET::runtime-jail::engine'],
             'command': self['IMAGE::command'],
             'tarball': self['ROOTFS-TARBALL'],

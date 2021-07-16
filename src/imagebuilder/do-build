@@ -5,4 +5,4 @@ export PATH="$PATH:$HOME/.usr/sbin"
 
 rm -Rf tmp
 
-./imagebuilder build "dia"
+./flyingtux-app build "dia"

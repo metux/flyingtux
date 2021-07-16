@@ -3,4 +3,4 @@
 export LD_LIBRARY_PATH=$HOME/.usr/lib
 export PATH="$PATH:$HOME/.usr/sbin"
 
-./imagebuilder run "dia"
+./flyingtux-app run "dia"

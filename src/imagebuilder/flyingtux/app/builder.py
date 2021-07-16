@@ -1,7 +1,7 @@
 from metux.util.specobject import SpecObject
 from metux.util.log import info
-import pkg
-import buildjail
+from ..pkg import get as pkg_get
+from ..buildjail import get as buildjail_get
 
 # 2do: * fetch arch from target
 #      * check what else can be fetched from target
@@ -49,10 +49,10 @@ class Builder(SpecObject):
         jailconf['target-tarball']      = self['ROOTFS-TARBALL']
         jailconf['workdir']             = self['BUILD-SYSROOT']
 
-        self.my_jail = buildjail.get(jailconf)
+        self.my_jail = buildjail_get(jailconf)
 
     def init_pkg(self):
-        self.my_pkg = pkg.get(
+        self.my_pkg = pkg_get(
             self['IMAGE::OSBASE::engine'],
             {
                 'arch':    self['ARCH'],
