@@ -1,12 +1,11 @@
-from metux.util.specobject import SpecObject
 from metux.util.log import info
 from ..container import get as container_get
 from ..services import process_os_service
+from toolbase import ToolBase
 
-class Runner(SpecObject):
+class Runner(ToolBase):
     def __init__(self, spec):
-        SpecObject.__init__(self, spec)
-        self.my_toolname = 'Runner'
+        ToolBase.__init__(self, spec, 'Runner')
         self.tempdirs = []
 
     def add_params(self, p, jail):
@@ -34,6 +33,3 @@ class Runner(SpecObject):
         jail.run()
 
         return 0
-
-    def info(self, text):
-        info("Runner: %s" % text)

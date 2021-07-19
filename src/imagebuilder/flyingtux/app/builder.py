@@ -2,13 +2,13 @@ from metux.util.specobject import SpecObject
 from metux.util.log import info
 from ..pkg import get as pkg_get
 from ..buildjail import get as buildjail_get
+from toolbase import ToolBase
 
 # 2do: * fetch arch from target
 #      * check what else can be fetched from target
-class Builder(SpecObject):
+class Builder(ToolBase):
     def __init__(self, spec):
-        SpecObject.__init__(self, spec)
-        self.my_toolname = 'Builder'
+        ToolBase.__init__(self, spec, 'Builder')
 
     """[private]"""
     def __do_single_os_component(self, name, component):
@@ -38,7 +38,7 @@ class Builder(SpecObject):
             component = self['IMAGE::OSBASE'].get_component(name)
             self.info("processing component: "+name)
             if component is None:
-                raise Exception("missing os component %s needed by image" % name)
+                self.abort("missing os component %s needed by image" % name)
             self.__do_single_os_component(name, component)
 
     def init_jail(self):
@@ -89,6 +89,3 @@ class Builder(SpecObject):
 
     def run(self):
         return self.build_image()
-
-    def info(self, text):
-        info('Builder: %s' % text)

@@ -3,6 +3,7 @@ from metux.util.lambdadict import LambdaDict
 from spec import obj_types
 from app.builder import Builder
 from app.runner import Runner
+from app.deploy import Deploy
 from os import getcwd, environ
 
 class Target(SpecObject):
@@ -55,21 +56,8 @@ class Target(SpecObject):
             obj.info("forced arch: %s" % arch)
             obj.default_set('ARCH', arch)
 
-    def get_builder(self, img_name):
-        obj = Builder({
-            'workdir':  getcwd()+'/tmp',
-            'IMAGE':    self.load_image(img_name),
-            'PLATFORM': self.load_object('platform', self['platform']),
-            'TARGET':   self
-        }, self)
-
-        self.inject_conf(obj)
-        self.compute_arch(obj)
-
-        return obj
-
-    def get_runner(self, img_name):
-        obj = Runner({
+    def get_tool(self, tool, img_name):
+        obj = tool({
             'workdir':  getcwd()+'/tmp',
             'IMAGE':    self.load_image(img_name),
             'PLATFORM': self.load_object('platform', self['platform']),
@@ -80,6 +68,15 @@ class Target(SpecObject):
         self.compute_arch(obj)
 
         return obj
+
+    def get_builder(self, img_name):
+        return self.get_tool(Builder, img_name)
+
+    def get_runner(self, img_name):
+        return self.get_tool(Runner, img_name)
+
+    def get_deploy(self, img_name):
+        return self.get_tool(Deploy, img_name)
 
 def get(conffile):
     obj = Target({})

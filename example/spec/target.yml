@@ -14,3 +14,13 @@ build-jail:
 os-services:
     x11:
         display: ${ENV::DISPLAY}
+
+apps:
+    dia:
+        os-service:
+            x11: allowed
+            network: allowed
+            audio: denied
+            userfiles/pictures:  readonly-insert
+            userfiles/moveis:    readonly
+            userfiles/documents: 
