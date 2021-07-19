@@ -4,6 +4,8 @@ build-sysroot:  ${workdir}/sysroot/${image}
 configdir:      ${user.cwd}/cf
 image-dir:      ${workdir}/images
 sysroot-dir:    ${workdir}/sysroot
+deploy-dir:     ${workdir}/deploy
+deploy-app-dir: ${workdir}/deploy/app
 
 runtime-jail:
     engine: docker

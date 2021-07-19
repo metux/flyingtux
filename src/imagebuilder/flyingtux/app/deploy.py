@@ -2,11 +2,17 @@ from metux.util.log import info
 from ..container import get as container_get
 from ..services import process_os_service
 from toolbase import ToolBase
+from metux.util.fs import mkdir
+from ..spec.deploy import DeploySpec
+from os.path import isfile, dirname
+import yaml
 
 class Deploy(ToolBase):
     def __init__(self, spec):
         ToolBase.__init__(self, spec, 'Deploy')
         self.tempdirs = []
+        self.default_set('APP_DEPLOY_DIR', '${TARGET::deploy-app-dir}/${IMAGE::NAME}')
+        self.my_deploy_spec_file = self['TARGET::deploy-app-dir']+'/'+self['IMAGE::NAME']+'/info.yml'
 
     def add_params(self, p, jail):
         if 'mounts' in p:
@@ -32,5 +38,27 @@ class Deploy(ToolBase):
 #        jail.add_tempdirs(self['IMAGE::OSBASE::tmpdirs'])
 #        jail.run()
 #
-        info("application: "+text)
+# 2do:
+# + check for image built
+# + check for deployment descriptor -- load it or generate it
+# + check for unmet permissions etc
+        self.load_deploy()
+
+
+    def load_deploy(self):
+        dirname(self.my_deploy_spec_file)
+
+        self.my_deploy_spec = DeploySpec({})
+        if isfile(self.my_deploy_spec_file):
+            self.info("already deployed: "+self.my_deploy_spec_file)
+            self.my_deploy_spec.load_spec(deploy_app_yml)
+        else:
+            self.info("creating new deploy spec")
+            self.my_deploy_spec['image'] = DeploySpec({})
+
+        with open(self.my_deploy_spec_file, 'w') as outfile:
+#            yaml.dump(self, outfile, default_flow_style=False, indent='    ')
+            yaml.dump(self, outfile, indent=4)
+
+        self.info("deploying "+self['IMAGE::NAME'])
         return 0

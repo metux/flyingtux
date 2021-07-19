@@ -1,5 +1,4 @@
 from basespec import BaseSpec
-from metux.util.specobject import SpecObject
 from ..util import clean_path
 
 class OSBaseSpec(BaseSpec):
