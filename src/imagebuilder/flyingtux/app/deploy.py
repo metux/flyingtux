@@ -3,9 +3,17 @@ from ..container import get as container_get
 from ..services import process_os_service
 from toolbase import ToolBase
 from metux.util.fs import mkdir
-from ..spec.deploy import DeploySpec
+from ..spec.deploy import DeploySpec, DeploySpec_representer
 from os.path import isfile, dirname
 import yaml
+from metux.util.specobject import SpecObject
+
+#define the representer, responsible for serialization
+def specobject_representer(dumper, data):
+    log.warn("======= representer")
+    serializedData = repr(data._my_spec)
+    return dumper.represent_dict(data._my_spec)
+
 
 class Deploy(ToolBase):
     def __init__(self, spec):
@@ -51,14 +59,16 @@ class Deploy(ToolBase):
         self.my_deploy_spec = DeploySpec({})
         if isfile(self.my_deploy_spec_file):
             self.info("already deployed: "+self.my_deploy_spec_file)
-            self.my_deploy_spec.load_spec(deploy_app_yml)
+            self.my_deploy_spec.load_spec(self.my_deploy_spec_file)
         else:
             self.info("creating new deploy spec")
-            self.my_deploy_spec['image'] = DeploySpec({})
 
+#        yaml.add_multi_representer(DeploySpec, DeploySpec_representer)
+#        yaml.add_multi_representer(SpecObject, DeploySpec_representer)
+
+        self.info("serializing ...")
         with open(self.my_deploy_spec_file, 'w') as outfile:
-#            yaml.dump(self, outfile, default_flow_style=False, indent='    ')
-            yaml.dump(self, outfile, indent=4)
+            yaml.dump(self, outfile, default_flow_style=False, indent=4)
 
         self.info("deploying "+self['IMAGE::NAME'])
         return 0

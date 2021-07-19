@@ -139,3 +139,8 @@ class SpecObject(object):
         for a in attrs:
             if not self.has_key(a):
                 raise Exception("missing mandatory attribute %s" % a)
+
+def specobject_representer(dumper, data):
+    return dumper.represent_dict(data._my_spec)
+
+yaml.add_multi_representer(SpecObject, specobject_representer)

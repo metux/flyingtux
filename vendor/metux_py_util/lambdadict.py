@@ -1,6 +1,7 @@
 from inspect import isfunction
 from collections import Mapping
 from metux.util.log import info
+import yaml
 
 class LambdaDictFilter:
     def filter_get_res(self, ld, key, val):
@@ -114,3 +115,8 @@ class LambdaDict(dict):
             return sub.__setitem__(key[1:], val)
 
         return self.__setitem__(key.split('::'), value)
+
+def lambdadict_representer(dumper, data):
+    return dumper.represent_dict(data)
+
+yaml.add_multi_representer(LambdaDict, lambdadict_representer)
