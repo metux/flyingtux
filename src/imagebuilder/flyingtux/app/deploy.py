@@ -50,25 +50,23 @@ class Deploy(ToolBase):
 # + check for image built
 # + check for deployment descriptor -- load it or generate it
 # + check for unmet permissions etc
-        self.load_deploy()
+        self.create_deploy()
 
-
-    def load_deploy(self):
+    def create_deploy(self):
+        self.info("deploying "+self['IMAGE::NAME'])
         dirname(self.my_deploy_spec_file)
 
-        self.my_deploy_spec = DeploySpec({})
         if isfile(self.my_deploy_spec_file):
-            self.info("already deployed: "+self.my_deploy_spec_file)
-            self.my_deploy_spec.load_spec(self.my_deploy_spec_file)
+            self.abort("already deployed: "+self.my_deploy_spec_file)
         else:
             self.info("creating new deploy spec")
 
-#        yaml.add_multi_representer(DeploySpec, DeploySpec_representer)
-#        yaml.add_multi_representer(SpecObject, DeploySpec_representer)
+        self.my_deploy_spec = DeploySpec({
+            'image': self['IMAGE::NAME'],
+        })
 
         self.info("serializing ...")
         with open(self.my_deploy_spec_file, 'w') as outfile:
-            yaml.dump(self, outfile, default_flow_style=False, indent=4)
+            yaml.dump(self.my_deploy_spec, outfile, default_flow_style=False, indent=4)
 
-        self.info("deploying "+self['IMAGE::NAME'])
         return 0
