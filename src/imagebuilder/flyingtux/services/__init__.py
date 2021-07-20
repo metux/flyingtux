@@ -6,9 +6,16 @@ os_services = {
     'temp-homedir': TempHomedir
 }
 
+class E_UnknownOSService(Exception):
+    def __init__(self, name, spec, runner):
+        self.my_name = name
+        self.my_spec = spec
+        self.my_runner = runner
+        Exception.__init__("Unknown OS service: "+name)
+
 def get_os_service(name, spec, runner):
     if name not in os_services:
-        raise Exception("unknown os service: "+name)
+        raise E_UnknownOSService(name, spec, runner)
     return os_services[name](spec, runner)
 
 def process_os_service(name, spec, runner):

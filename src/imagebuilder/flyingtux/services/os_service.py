@@ -7,7 +7,7 @@ class Base(SpecObject):
         self.my_runner = runner
 
     def process(self):
-        raise Exception("process: not implemented")
+        raise Exeption("not implemented")
 
 class X11(Base):
     def process(self):

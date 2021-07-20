@@ -59,5 +59,7 @@ os-services:
         required: yes
     temp-homedir:
         required: yes
+    user-documents:
+        required: yes
 
 command: /usr/bin/dia

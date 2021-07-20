@@ -8,13 +8,6 @@ from os.path import isfile, dirname
 import yaml
 from metux.util.specobject import SpecObject
 
-#define the representer, responsible for serialization
-def specobject_representer(dumper, data):
-    log.warn("======= representer")
-    serializedData = repr(data._my_spec)
-    return dumper.represent_dict(data._my_spec)
-
-
 class Deploy(ToolBase):
     def __init__(self, spec):
         ToolBase.__init__(self, spec, 'Deploy')
@@ -62,8 +55,17 @@ class Deploy(ToolBase):
             self.info("creating new deploy spec")
 
         self.my_deploy_spec = DeploySpec({
-            'image': self['IMAGE::NAME'],
+            'image':    self['IMAGE::NAME'],
+            'arch':     self['ARCH'],
+            'version':  self['IMAGE::version'],
+            'platform': self['PLATFORM::NAME'],
+            'engine':   self['TARGET::runtime-jail::engine']
         })
+
+        platform = self['PLATFORM']
+        for sname,sspec in self['IMAGE::os-services'].iteritems():
+            print(sname+" "+repr(sspec))
+#            self.add_params(process_os_service(sname, sspec, self), jail)
 
         self.info("serializing ...")
         with open(self.my_deploy_spec_file, 'w') as outfile:
