@@ -1,6 +1,7 @@
 from inspect import isfunction
 from collections import Mapping, MutableSequence
 from metux.util.log import info
+import yaml
 
 def isarray(item):
     return isinstance(item, tuple) or isinstance(item, MutableSequence)
@@ -152,3 +153,8 @@ class LambdaDict(dict,LambdaBase):
             return sub.__setitem__(key[1:], value)
 
         return self.__setitem__(key.split('::'), value)
+
+def lambdadict_representer(dumper, data):
+    return dumper.represent_dict(data)
+
+yaml.add_multi_representer(LambdaDict, lambdadict_representer)
