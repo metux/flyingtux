@@ -140,3 +140,8 @@ class SpecObject(object):
 
     def post_init(self):
         pass
+
+def specobject_representer(dumper, data):
+    return dumper.represent_dict(data._my_spec)
+
+yaml.add_multi_representer(SpecObject, specobject_representer)
