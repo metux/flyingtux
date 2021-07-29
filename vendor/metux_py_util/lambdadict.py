@@ -142,13 +142,13 @@ class LambdaDict(dict,LambdaBase):
                 dict.__setitem__(self, key[0], value)
                 return
 
-            if dict.has_key(self, key[0]):
+            if dict.has_key(self, key[0]) and self[key[0]] is not None:
                 sub = dict.__getitem__(self, key[0])
                 if not isinstance(sub, Mapping):
                     raise Exception("cant add elements to non-dict")
             else:
-                sub = LambdaDict({}, None, self.filter)
-                dict.__setitem__(self, key[0], self.filter_new_item(sub))
+                sub = self.filter_new_item(LambdaDict({}, None, self.filter)) ## fixme
+                dict.__setitem__(self, key[0], sub)
 
             return sub.__setitem__(key[1:], value)
 
