@@ -99,3 +99,7 @@ class Docker:
 
     def image_import(self, filename, name):
         return self._call_stdout(['image', 'import', filename, name])
+
+    def image_check(self, name):
+        exit_code, stdout, stderr = self._call_catch(['inspect', '--type=image', name])
+        return exit_code == 0
