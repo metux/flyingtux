@@ -114,7 +114,7 @@ class SpecObject(object):
         self.post_init()
 
     """get spec object"""
-    def get_spec(self, s):
+    def get_spec(self):
         return self._my_spec
 
     """def load spec from yaml"""
