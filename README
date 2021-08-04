@@ -1,0 +1,126 @@
+FlyingTux project
+==================
+
+The FlyingTux project aims for creating an infrastructure for "mobile"
+devices with containerized applications. It shares some concepts with
+existing mobile OS'es like Android (app centric) as well as datacenter
+solutions like Kubernetes (service orchestration, etc).
+
+Problems with existing solutions:
+
+1. Android
+
+  * OS is pretty monolithic and has grown very huge over the years,
+    thus very hard to maintain
+  * has to carry around lots of meanwhile quite obsolete code just
+    for maintaining backwards compatibility
+  * doesn't use much components from the FOSS community (except for the
+    Linux kernel) - most code is homebrewn by Google and very hard to
+    understand and maintain by third parties.
+  * limited app isolation: doesn't use sophisticated kernel features like
+    namespaces
+  * runtime audit of app behavior needs deep customizations within the
+    *huge* code base
+  * lacking usual GNU tools for operating
+  * very hard to customize (full time developer task)
+  * very limited user control on app's actual access pathes (just one-or
+    nothing decisions, no virtualization/sandboxing of data sources like
+    per app address books, etc)
+  * no (user accessible) firewall control
+  * apps need to be written specifically from ground up for Android
+  * no defined generic data sources (e.g. system-managed databases, data
+    source providers or communication service provides, ...)
+  * apps can either be completely installed or not - removing app images
+    while keeping app user data is not possible
+
+2. Docker / Swarm / Kubernetes
+
+  * appliation images tend to be pretty huge - hard to share data between
+    different images (execpt for shared rootfs layers)
+  * images are per definition indepent of the actual host, thus often have
+    to contain lots of things that are only used in *some* specific situations
+    (e.g. GPU drivers)
+  * no high-level model of data sources and access control for user data,
+    only knows of virtual servers, that in this regard behave like separate
+    GNU/Linux server
+  * no management of in-container configurations
+  * not designed for desktop/GUI applications, thus lacking all sorts of
+    features related to direct user interaction
+  * no data lifecycle management (eg. no cache purging, backup/restore of
+    persistant user data, etc)
+
+What FlyingTux does differently ?
+
+  * applications as well as large parts of system services are running in
+    strictly isolated containers
+  * communication between containers is formally descripted in (user-editable)
+    deployment descriptors
+  * support several service instances (eg. one can bind individual apps to
+    different separate books or a fake gps)
+  * the owner/operator has full control over the machine, just like on a
+    classic GNU/Linux system
+  * generic data sources (e.g. databases) outside the app container, centrally
+    managed with backup/restore, audit features, ...
+  * most system services can be replaced by the user or having multiple
+    instances (eg. entirely separated address books for business, private,
+    untrusted IMs, etc)
+  * app images are created (and updated) on-demand via classic distro package
+    manager, installing only necessary packages, depending on host configuration
+    (eg. automatically selects the right gpu drivers if app needs them)
+  * images of seldomly used apps can be purged and are recreated as-needed
+    (without any app data getting lost)
+
+Fundamental concepts:
+
+1. Images
+
+  * images define all important aspects of the application containers static data
+    (eg. software, fixed configs, ...)
+  * always based on some 'osbase', which defines the app-visible OS base
+  * all potentially configurable components of the in-container os are explicitly
+    requested by listing 'os-components', eg. an GL stack
+  * image composition is always done by running package manager inside a temporary
+    build container - the actual process is derived from the image configuration
+    as well as the osbased that the image is based on
+  * images may add their own package repositories, which must to be compatible with
+    the osbase used by the app
+
+2. OS-Base's
+
+  * each app/image needs to be based on some 'OS base', which defines things like
+    distro, package manager, generic package sources, etc, etc.
+  * the definition of these osbase's is entirely in the realm of the FlyingTux
+    project - apps may only use one of the officially supported osbase's, they can't
+    bring their own.
+  * For now we only have an simple Alpine-based one, others will be added in the
+    future when actually needed - older ones can be marked deprecated and shall be
+    phased out
+  * an OS base can define a number of "os-components", which can be selected by
+    by certain host settings, when used by an app, cause specific actions in image
+    build process, eg. installing extra packaes. use cases are eg. installation of
+    gpu specific mesa drivers, locale specific packages and other optional 
+    components that are only needed by some apps depending on certain host settings
+
+3. OS-Services
+
+  * interactions between apps and the OS components (e.g. the UI, network, etc) is
+    done through 'OS-Services', which need to be requested explicitly
+  * the FT runtime engine takes are of setting up the necessary connections
+    and permissions as needed
+  * OS services can have several configuration and permissions items that may be
+    editied by the user (in the deployment descriptors) - this allows even deep
+    user customizations of the system composition (eg. which display server or
+    audio device/server to use, mapping and permission of user directories, etc)
+
+4. Deployments
+
+  * for an app to be actually executable, it needs to be deployed, thus an
+    deployment descriptor exists
+  * the 'deploy' command creates an deployment descriptor based on the image and
+    certain defaults (an interactive "app installer" would present an UI for
+    editing important aspects like permissions, service binding, etc)
+  * all configuration needed to run an actual app instance is specified in the
+    deployment descriptor
+  * the deployment is separate from the image build process - while image can be
+    built before deploying or launching an app, it is also done automatically
+    on-demand (before launch) if not existing yet or had been purged
