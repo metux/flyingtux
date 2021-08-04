@@ -157,4 +157,8 @@ class LambdaDict(dict,LambdaBase):
 def lambdadict_representer(dumper, data):
     return dumper.represent_dict(data)
 
+def lambdalist_representer(dumper, data):
+    return dumper.represent_list(data)
+
 yaml.add_multi_representer(LambdaDict, lambdadict_representer)
+yaml.add_multi_representer(LambdaList, lambdalist_representer)
