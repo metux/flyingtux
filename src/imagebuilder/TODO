@@ -1,9 +1,3 @@
-* run apps with unprivileged user inside container
-* make running as root an extra permission / osservice
-* allow switching off tarball compression for build/deployment performance
-* move image tarball handling to buildjail backend object
-  --> docker has its own code to generate the temporary image
-* make image file name's meaning engine-dependent
 * rename specobject (and subdir) image to app
 * persistant app home dirs
 * app cache dirs

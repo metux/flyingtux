@@ -1,7 +1,7 @@
 import os_service
 from metux.util.log import info
 from ..util import FT_ConfigError
-import x11, dev, userdir
+import x11, dev, userdir, webproxy
 
 os_services = {
     'x11':            x11.X11,
@@ -13,6 +13,7 @@ os_services = {
     'dri':            dev.DriDevice,
     'service-dir':    os_service.ServiceDir,
     'data-volume':    os_service.DataVolume,
+    'web':            webproxy.WebProxy,
 }
 
 class E_UnknownOSService(FT_ConfigError):

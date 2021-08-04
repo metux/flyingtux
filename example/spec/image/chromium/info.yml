@@ -8,6 +8,8 @@ rootfs:
     packages:
         - chromium
         - gtk+3.0
+        - openssh
+        - curl
     create-links:
         - name:   /usr/lib/chromium/libGLESv2.so
           target: /usr/lib/libGLESv2.so
@@ -94,6 +96,9 @@ rootfs:
             - /usr/share/mime
             - /usr/share/themes
             - /usr/share/xcb
+            - /usr/lib/chromium/MEIPreload
+
+#            - /usr/lib/chromium/crashpad_handler
 
 os-services:
     x11:
@@ -101,11 +106,76 @@ os-services:
     temp-homedir:
         required: yes
     user-downloads:
+    web:
+        required: yes
+        whitelist:
+            - 'http://www.thur.de/'
+            - 'http://www.google.com/'
     dri:
+        required: no
+
+appdir: /home/app/.config/chromium
+
+volumes:
+    - datadir:    /home/app/.config/chromium
+      name:       profile
+      autoclean:
+        - CrashpadMetrics-active.pma
+        - Crash Reports
+    - cachedir:   /home/app/cache
+      name:       cache
+    - nullfile:   /home/app/.config/chromium/CrashpadMetrics-active.pma
+    - tempdir:    /home/app/.config/chromium/AutofillRegex
+    - tempdir:    /home/app/.config/chromium/AutofillStates
+    - tempdir:    /home/app/.config/chromium/BrowserMetrics
+    - tempdir:    /home/app/.config/chromium/CertificateRevocation
+    - tempdir:    /home/app/.config/chromium/ClientSidePhishing
+#    - tempdir:    /home/app/cache
+    - tempdir:    /home/app/.config/chromium/Crowd Deny
+    - tempdir:    /home/app/.config/chromium/DesktopSharingHub
+    - tempdir:    /home/app/.config/chromium/Dictionaries
+    - tempdir:    /home/app/.config/chromium/FileTypePolicies
+    - tempdir:    /home/app/.config/chromium/GrShaderCache
+    - tempdir:    /home/app/.config/chromium/hyphen-data
+    - nullfile:   /home/app/.config/chromium/MEIPreload
+    - nullfile:   /home/app/.config/chromium/OnDeviceHeadSuggestModel
+    - nullfile:   /home/app/.config/chromium/OptimizationHints
+    - nullfile:   /home/app/.config/chromium/OriginTrials
+    - nullfile:   /home/app/.config/chromium/Safe Browsing
+    - nullfile:   /home/app/.config/chromium/Safe Browsing Cookies
+    - nullfile:   /home/app/.config/chromium/Safe Browsing Cookies-journal
+    - nullfile:   /home/app/.config/chromium/SafetyTips
+    - tempdir:    /home/app/.config/chromium/ShaderCache
+    - tempdir:    /home/app/.config/chromium/SSLErrorAssistant
+    - nullfile:   /home/app/.config/chromium/Subresource Filter
+    - tempdir:    /home/app/.config/chromium/ZxcvbnData
+    # doesnt work as nullfile
+    - tempdir:   /home/app/.config/chromium/Default/GCM Store
+    - tempdir:    /home/app/.config/chromium/Default/GPUCache
+    - tempdir:    /home/app/.config/chromium/Default/Sync Data
+    - nullfile:   /home/app/.config/chromium/Network Action Predictor
+    - nullfile:   /home/app/.config/chromium/Network Action Predictor-journal
+    - nullfile:   /home/app/.config/chromium/Reporting and NEL
+    - nullfile:   /home/app/.config/chromium/Reporting and NEL-journal
+# chromium just sits around doing nothing if thats mounted as tmpfs
+#    - tempdir:    /home/app/.config/chromium/Crash Reports
+
+handlers:
+    file:
+        mime-types:
+            - text/html
+            - text/xml
+            - application/xhtml_xml
+            - application/x-mimearchive
+        command:
+            - /usr/bin/chromium-browser
+            - '%U'
+    url-schemes:
+        - http
+        - https
 
 command:
     - /usr/bin/chromium-browser
-    - --no-sandbox
     - --disable-breakpad
     - --disable-default-apps
     - --disable-extensions
@@ -117,7 +187,12 @@ command:
     - --enable-zero-copy
     - --enable-native-gpu-memory-buffers
     - --no-default-browser-check
+    - --disk-cache-dir=/home/app/cache
+    - --no-sandbox
 
+# possible bug mitigation
+#--disable-background-timer-throttling
+#--disable-backgrounding-occluded-windows
 #--disable-gpu-sandbox
 #--disable-background-networking
 #--enable-features=NetworkService,NetworkServiceInProcess
@@ -138,7 +213,6 @@ command:
 #--enable-automation
 #--use-mock-keychain
 #--disable-web-security
-#--user-data-dir=/var/www/project-generator/var/chrome-user-data
 #--allow-file-access-from-files
 #--no-sandbox-and-elevated
 #--no-zygote

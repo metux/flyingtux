@@ -33,6 +33,9 @@ class Base(SpecObject):
     def compute(self):
         pass
 
+    def get_app_name(self):
+        return self.my_runner['image']
+
     def process(self):
         self.add_tempdirs(self.temp_dirs)
         if self.is_permitted('__enabled__'):

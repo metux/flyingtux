@@ -5,6 +5,8 @@ from spec import obj_types
 from app import Builder, Deploy, Runner
 from os import getcwd, environ
 from os.path import expanduser
+from util import IpAddrMap
+import ipaddress
 
 class Target(SpecObject):
     def post_init(self):
@@ -16,6 +18,8 @@ class Target(SpecObject):
             'USER::cwd':  lambda: getcwd(),
         })
         self._objcache = {}
+        # need to do that lazily
+        self.my_ipmap = None
 
     def load_object(self, type, name, param = {}):
         datadir = self['configdir']+'/'+type+'/'+name
@@ -62,7 +66,7 @@ class Target(SpecObject):
             'IMAGE':        self.load_object('image', img_name),
             'PLATFORM':     self.load_object('platform', self['platform']),
             'TARGET':       self,
-            'ROOTFS-IMAGE': 'flyingtux-${IMAGE::NAME}-${ARCH}:${IMAGE::version}',
+            'ROOTFS-IMAGE': 'flyingtux-app-${IMAGE::NAME}-${ARCH}:${IMAGE::version}',
         })
 
         self.compute_arch(obj)
@@ -82,9 +86,35 @@ class Target(SpecObject):
         obj.load_spec(self['deploy-app-dir']+'/'+img_name+'/info.yml')
         obj['TARGET'] = self
         obj['APP-BASE-DIR'] = self['app-base-dir']+'/'+img_name
-        obj['APP-VOLUME-DIR'] = '${APP-BASE-DIR}/volumes'
+        obj['APP-VOLUME-DIR']  = '${APP-BASE-DIR}/volumes'
+        obj['APP-CACHE-DIR']   = '${APP-BASE-DIR}/cache'
         obj['APP-SERVICE-DIR'] = '${APP-BASE-DIR}/services'
         return obj
+
+    def start_network(self):
+        from container import get as container_get
+        netconf = self['jail-network']
+        try:
+            container_get({'engine': self['jail-engine']}).network_create(
+                name     = netconf['name'],
+                label    = netconf['name'],
+                internal = True,
+                subnet   = netconf['subnet'],
+                ip_range = netconf['ip-range']
+            )
+        except Exception as e:
+            pass
+
+    def get_app_ipaddr(self, name):
+        return self.get_container_ip('app@'+name)
+
+    def get_container_ip(self, name):
+        if self.my_ipmap is None:
+            self.my_ipmap = IpAddrMap(
+                self['dynconf-dir']+'/ip-map.yml',
+                self['jail-network::ip-range'],
+                self['jail-network::reserved-ip'])
+        return self.my_ipmap.get_ip(name)
 
 def get(conffile):
     obj = Target({})
