@@ -1,0 +1,23 @@
+#!/bin/bash
+
+SQUID_IP=172.66.0.2
+SQUID_CONTAINER=squid
+SQUID_IMAGE=flyingtux-squid
+SQUID_CONFDIR=$HOME/.flyingtux/deploy/conf/squid
+APP_NET=flyingtux-app
+OUT_NET=bridge
+
+docker rm -f "$SQUID_CONTAINER"
+
+docker create \
+    --network=$APP_NET \
+    --name="$SQUID_CONTAINER" \
+    --mount type=bind,source=/srv/docker/squid/cache,target=/var/spool/squid \
+    --mount type=bind,source=$(pwd)/squid.conf,target=/etc/squid/squid.conf \
+    --mount type=bind,source=$SQUID_CONFDIR,target=/etc/squid/app.d \
+    --ip=$SQUID_IP \
+    $SQUID_IMAGE
+
+docker network connect $OUT_NET $SQUID_CONTAINER
+
+docker start -ai $SQUID_CONTAINER
