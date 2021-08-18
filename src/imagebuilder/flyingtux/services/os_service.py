@@ -121,6 +121,9 @@ and really doesn't need to be user-configurable at all.
 class TempHomedir(Base):
     temp_dirs = [ '/root', '/home/app', '/tmp' ]
 
+class SysTempDir(Base):
+    temp_dirs = ['/tmp', '/var/tmp']
+
 class ServiceDir(Base):
     def compute(self):
         self.bind_dir(self.get_app_service_dir()+'/import/', '/service/import')

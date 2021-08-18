@@ -119,7 +119,8 @@ class Runner(ToolBase):
     def configure(self):
         self.init_jail()
 
-    def run(self):
+    def run(self, args):
+        print("runner args: "+str(args))
         self.init_jail()
         self.my_target.start_network()
         if self.my_jail.check_running():
@@ -129,8 +130,8 @@ class Runner(ToolBase):
             if not self.my_jail.check_rootfs():
                 self.info("missing image: %s" % self['image'])
                 self.my_target.get_builder(self['image']).run()
-            self.my_jail.run_detached()
-#            self.my_jail.run_foreground()
+#            self.my_jail.run_detached()
+            self.my_jail.run_foreground()
 
     def execute(self, args):
         self.init_jail()

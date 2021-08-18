@@ -3,6 +3,7 @@ from ..spec.deploy import DeploySpec, DeploySpec_representer
 from ..naming import app_container_name
 from metux.util.fs import mkdir
 from os.path import isfile, dirname
+from os import chmod
 from toolbase import ToolBase
 import yaml
 
@@ -13,6 +14,22 @@ class Deploy(ToolBase):
 
     def run(self):
         self.create_deploy()
+        self.create_script()
+
+    def create_script(self):
+        scriptdir = self['TARGET::workdir']+'/bin'
+        name      = self['IMAGE::NAME']
+        codebase  = self['TARGET::CODEBASE']
+        scriptname = scriptdir+'/'+name
+        mkdir(scriptdir)
+
+        with open(scriptname, "w") as f:
+            f.write('#!/usr/bin/python\n')
+            f.write('import sys\n')
+            f.write('sys.path.append("'+codebase+'")\n')
+            f.write('from flyingtux.cmd import run_app\n')
+            f.write('run_app()\n')
+        chmod(scriptname, 0755)
 
     def create_deploy(self):
         image = self['IMAGE']

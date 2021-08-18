@@ -6,6 +6,7 @@ import x11, dev, userdir, webproxy
 os_services = {
     'x11':            x11.X11,
     'temp-homedir':   os_service.TempHomedir,
+    'sys-tempdir':    os_service.SysTempDir,
     'user-documents': userdir.UserDocuments,
     'user-pictures':  userdir.UserPictures,
     'user-movies':    userdir.UserMovies,
