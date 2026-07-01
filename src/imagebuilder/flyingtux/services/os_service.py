@@ -33,6 +33,9 @@ class Base(SpecObject):
     def compute(self):
         pass
 
+    def get_app_name(self):
+        return self.my_runner['image']
+
     def process(self):
         self.add_tempdirs(self.temp_dirs)
         if self.is_permitted('__enabled__'):
@@ -117,6 +120,9 @@ and really doesn't need to be user-configurable at all.
 """
 class TempHomedir(Base):
     temp_dirs = [ '/root', '/home/app', '/tmp' ]
+
+class SysTempDir(Base):
+    temp_dirs = ['/tmp', '/var/tmp']
 
 class ServiceDir(Base):
     def compute(self):
