@@ -4,9 +4,25 @@ build-sysroot:  ${workdir}/sysroot/${image}
 configdir:      ${USER::cwd}/cf
 build-temp:     ${workdir}/temp
 deploy-app-dir: ${workdir}/deploy/app
+deploy-dir:     ${workdir}/deploy
+dynconf-dir:    ${workdir}/deploy/conf
 app-base-dir:   ${workdir}/apps
 jail-engine:    docker
 
-os-services:
-    x11:
-        display: ${ENV::DISPLAY}
+jail-network:
+    name:      flyingtux-app
+    bridge:    bridge
+    ip-range:  172.66.0.0/16
+    subnet:    172.66.0.0/16
+    reserved-ip:
+        net:   172.66.0.0
+        gw:    172.66.0.1
+        proxy: 172.66.0.2
+
+web-proxy:
+    ip:          ${jail-network::reserved-ip::proxy}
+    port:        3128
+    image:       flyingtux-sys-squid
+    name:        flyingtux-sys-squid
+    conf-source: ${deploy-dir}/squid
+    conf-target: /etc/squid/app.d
