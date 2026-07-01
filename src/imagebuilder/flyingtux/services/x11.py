@@ -1,6 +1,3 @@
-from metux.util.specobject import SpecObject
-from metux.util.log import info
-from os import environ
 from os_service import Base
 
 """
