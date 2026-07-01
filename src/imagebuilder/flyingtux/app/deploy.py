@@ -1,5 +1,6 @@
 from ..services import process_os_service, get_os_service
 from ..spec.deploy import DeploySpec, DeploySpec_representer
+from ..naming import app_container_name
 from metux.util.fs import mkdir
 from os.path import isfile, dirname
 from os import chmod
@@ -48,7 +49,8 @@ class Deploy(ToolBase):
 
         # write / update deployment descriptor
         d['image']         = image['NAME']
-        d['name']          = 'flyingtux-app-'+image['NAME']+'_'+image['version']
+        d['name']          = app_container_name(appname=image['NAME'],
+                                                version=image['version'])
         d['version']       = image['version']
         d['os-services']   = image['os-services']
         d['arch']          = self['ARCH']

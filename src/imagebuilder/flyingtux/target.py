@@ -66,7 +66,7 @@ class Target(SpecObject):
             'IMAGE':        self.load_object('image', img_name),
             'PLATFORM':     self.load_object('platform', self['platform']),
             'TARGET':       self,
-            'ROOTFS-IMAGE': 'flyingtux-${IMAGE::NAME}-${ARCH}:${IMAGE::version}',
+            'ROOTFS-IMAGE': 'flyingtux-app-${IMAGE::NAME}-${ARCH}:${IMAGE::version}',
         })
 
         self.compute_arch(obj)
