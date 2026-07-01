@@ -2,5 +2,8 @@
 
 from sys import argv, exit
 from flyingtux.cmd import run_cmd
+import os
 
-exit(run_cmd('cf/target.yml', argv))
+dir = os.path.dirname(os.path.realpath(__file__))
+os.chdir(dir)
+exit(run_cmd(dir+'/cf/target.yml', argv))
