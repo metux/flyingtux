@@ -1,5 +1,0 @@
-#!/bin/bash
-
-. common.sh
-
-$CMD run $PKG
