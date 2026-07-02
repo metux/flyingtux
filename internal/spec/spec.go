@@ -39,7 +39,9 @@ func Wrap(e api.Entry) *SpecObj { return &SpecObj{e} }
 // Store serializes a SpecObj to a YAML file (raw/unsubstituted, matching the
 // Python yaml.dump of a spec).
 func Store(fn string, s *SpecObj, mode os.FileMode) error {
-	return core.YamlStore(fn, s, mode)
+	// Serialize the underlying entry (which implements MarshalYAML) rather than
+	// the *SpecObj wrapper, otherwise yaml wraps it under an "entry:" key.
+	return core.YamlStore(fn, s.Entry, mode)
 }
 
 // NewRoot creates an empty root SpecObj to assemble a spec tree in memory

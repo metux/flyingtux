@@ -54,6 +54,7 @@ func (t *Target) loadObject(typ, name string) (*spec.SpecObj, error) {
 	o.SetStr("DATADIR", datadir)
 	o.SetStr("NAME", name)
 	if typ == "image" {
+		o.SetDefaultStr("user", "app") // ImageSpec.post_init
 		osb, err := t.loadObject("osbase", o.GetStr("rootfs::osbase"))
 		if err != nil {
 			return nil, err

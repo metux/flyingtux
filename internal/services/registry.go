@@ -27,6 +27,11 @@ func GetService(name string, sp *spec.SpecObj, r Runner) (Service, error) {
 	if !ok {
 		return nil, util.ConfigError("Unknown OS service: %s", name)
 	}
+	// A null service entry (e.g. `user-downloads:` with no sub-config) parses to
+	// a nil entry; treat it as an empty spec, like SpecObject(None) in Python.
+	if sp == nil || sp.Entry == nil {
+		sp = spec.NewRoot()
+	}
 	return ctor(sp, r), nil
 }
 
