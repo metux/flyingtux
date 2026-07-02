@@ -20,13 +20,18 @@ an XLibre server built with it *and* started with a "-namespace <config>"
 granting our own connection management rights (plain QueryExtension
 already reports the extension as absent to any client without that
 privilege - there's no way to tell "not built in" apart from "built in but
-we're not privileged", and both cases must fall back the same way). None
-of the X servers this workspace currently has running meet that bar (a
-plain desktop session never does; even the mpbt-built Xephyr/Xnest have
-the extension compiled in but disabled until launched with "-namespace"
-and a matching cookie for us - see go-x11proto's docs/xnamespace-ci.md).
-So today this always falls back to the plain bind-mount below; it starts
-paying off once such a server is available to test against.
+we're not privileged", and both cases must fall back the same way).
+
+Confirmed root cause (2026-07-01/02, mpbt-workspace DASHBOARD.md): stock
+xserver-master's Xext/namespace/ only wires the ACE enforcement hooks, it
+never registers X-NAMESPACE as a queryable/dispatchable protocol extension
+- that missing wire-protocol registration lives on xserver PR #3103
+(branch draft/xns-proto), not yet merged. Built from that branch, the
+extension works end-to-end: 'xnamespace -s version'/'-s list' succeed and
+go-x11proto's run-xnamespace-test.sh passes 40/40 (both byte orders). So
+today this falls back to the plain bind-mount below on every server except
+one built from draft/xns-proto; it starts paying off as soon as #3103 (or
+an equivalent) merges upstream.
 """
 class X11(Base):
     permissions = {
