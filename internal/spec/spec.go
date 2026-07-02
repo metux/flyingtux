@@ -5,7 +5,10 @@
 package spec
 
 import (
+	"os"
+
 	"github.com/metux/go-magicdict/api"
+	"github.com/metux/go-magicdict/core"
 	"github.com/metux/go-magicdict/magic"
 )
 
@@ -32,6 +35,19 @@ func Load(fn string) (*SpecObj, error) {
 
 // Wrap adapts an existing magicdict entry as a SpecObj.
 func Wrap(e api.Entry) *SpecObj { return &SpecObj{e} }
+
+// Store serializes a SpecObj to a YAML file (raw/unsubstituted, matching the
+// Python yaml.dump of a spec).
+func Store(fn string, s *SpecObj, mode os.FileMode) error {
+	return core.YamlStore(fn, s, mode)
+}
+
+// NewRoot creates an empty root SpecObj to assemble a spec tree in memory
+// (nesting sub-specs via SetEntry) — used to build the Builder/Deploy tool
+// specs the way Target.get_tool does.
+func NewRoot() *SpecObj {
+	return &SpecObj{magic.NewMagicFromDict(core.EmptyDict(), core.EmptyDict())}
+}
 
 // --- read accessors (SpecObject.get_cf* family) ---
 
