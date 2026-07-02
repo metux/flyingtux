@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 import ipaddress
 from metux.util import log
 from os.path import normpath

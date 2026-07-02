@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from os import path, makedirs, unlink
 
 """helper object for representing a status file"""

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from subprocess import call, Popen, PIPE
 from os import devnull, environ
 from os.path import abspath, isfile, dirname

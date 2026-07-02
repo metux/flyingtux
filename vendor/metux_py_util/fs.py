@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from subprocess import call
 from os import makedirs
 from os.path import abspath

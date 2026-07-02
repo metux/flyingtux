@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from subprocess import Popen, PIPE, check_output
 from os import environ
 import atexit

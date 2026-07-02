@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from os_service import Base
 from metux.util.fs import mkdir
 from os.path import dirname

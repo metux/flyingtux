@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from metux.util import log
 from metux.util.docker import Docker
 from os.path import dirname

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from metux.util.log import info
 from ..pkg import get as pkg_get
 from ..buildjail import get as buildjail_get

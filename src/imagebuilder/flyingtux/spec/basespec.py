@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from metux.util.specobject import SpecObject
 
 class BaseSpec(SpecObject):

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 import user, docker
 from ..util import FT_UnsupportedJail
 

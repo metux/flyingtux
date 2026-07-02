@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from sys import argv, exit
 from os.path import dirname, abspath, basename
 from os import chdir

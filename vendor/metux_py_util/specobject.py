@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 import yaml
 from metux.util.log import info
 from metux.util.lambdadict import LambdaDict, LambdaDictFilter

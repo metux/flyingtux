@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from ..services import process_os_service, get_os_service
 from ..spec.deploy import DeploySpec, DeploySpec_representer
 from ..naming import app_container_name

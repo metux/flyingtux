@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from metux.util import log, fs
 from metux.util.docker import Docker
 from metux.util.specobject import SpecObject

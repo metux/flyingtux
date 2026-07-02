@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 from metux.util.log import info
 from ..container import get as container_get
 from ..services import process_os_service
