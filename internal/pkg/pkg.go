@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package pkg abstracts the distro package manager used to populate an image
 // sysroot inside a build jail (port of flyingtux.pkg).
 package pkg

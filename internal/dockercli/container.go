@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 package dockercli
 
 // Container is a handle to a docker container (port of DockerContainer).

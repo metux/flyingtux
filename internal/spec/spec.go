@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package spec is the flyingtux configuration core. It wraps go-magicdict
 // (the same recursive YAML dict with "::"-path access, lazy ${..} substitution
 // and defaults that mpbt uses) and provides the typed accessors that the Python
@@ -53,14 +55,14 @@ func NewRoot() *SpecObj {
 
 // --- read accessors (SpecObject.get_cf* family) ---
 
-func (c *SpecObj) GetStr(k Key) string             { return api.GetStr(c, k) }
-func (c *SpecObj) GetStrList(k Key) []string       { return api.GetStrList(c, k) }
-func (c *SpecObj) GetStrMap(k Key) map[Key]string  { return api.GetStrMap(c, k) }
-func (c *SpecObj) GetBool(k Key, dflt bool) bool    { return api.GetBool(c, k, dflt) }
-func (c *SpecObj) GetInt(k Key, dflt int) int       { return api.GetInt(c, k, dflt) }
-func (c *SpecObj) GetEntry(k Key) Entry             { return api.GetEntry(c, k) }
-func (c *SpecObj) SubKeys(k Key) api.KeyList        { return api.GetKeys(c, k) }
-func (c *SpecObj) SubElems(k Key) api.EntryList     { return api.GetElems(c, k) }
+func (c *SpecObj) GetStr(k Key) string            { return api.GetStr(c, k) }
+func (c *SpecObj) GetStrList(k Key) []string      { return api.GetStrList(c, k) }
+func (c *SpecObj) GetStrMap(k Key) map[Key]string { return api.GetStrMap(c, k) }
+func (c *SpecObj) GetBool(k Key, dflt bool) bool  { return api.GetBool(c, k, dflt) }
+func (c *SpecObj) GetInt(k Key, dflt int) int     { return api.GetInt(c, k, dflt) }
+func (c *SpecObj) GetEntry(k Key) Entry           { return api.GetEntry(c, k) }
+func (c *SpecObj) SubKeys(k Key) api.KeyList      { return api.GetKeys(c, k) }
+func (c *SpecObj) SubElems(k Key) api.EntryList   { return api.GetElems(c, k) }
 
 // Sub returns a nested entry wrapped as a SpecObj (nil-safe: a missing key
 // yields a SpecObj wrapping a nil entry, whose accessors return zero values).
@@ -71,12 +73,12 @@ func (c *SpecObj) Has(k Key) bool { return api.GetEntry(c, k) != nil }
 
 // --- write accessors ---
 
-func (c *SpecObj) SetStr(k Key, v string) error        { return api.SetStr(c, k, v) }
-func (c *SpecObj) SetBool(k Key, v bool) error         { return api.SetBool(c, k, v) }
-func (c *SpecObj) SetInt(k Key, v int) error           { return api.SetInt(c, k, v) }
-func (c *SpecObj) SetEntry(k Key, v Entry) error       { return api.SetEntry(c, k, v) }
-func (c *SpecObj) AppendStr(k Key, v string) error     { return api.AppendStr(c, k, v) }
-func (c *SpecObj) Delete(k Key) error                  { return api.Delete(c, k) }
+func (c *SpecObj) SetStr(k Key, v string) error    { return api.SetStr(c, k, v) }
+func (c *SpecObj) SetBool(k Key, v bool) error     { return api.SetBool(c, k, v) }
+func (c *SpecObj) SetInt(k Key, v int) error       { return api.SetInt(c, k, v) }
+func (c *SpecObj) SetEntry(k Key, v Entry) error   { return api.SetEntry(c, k, v) }
+func (c *SpecObj) AppendStr(k Key, v string) error { return api.AppendStr(c, k, v) }
+func (c *SpecObj) Delete(k Key) error              { return api.Delete(c, k) }
 
 func (c *SpecObj) SetDefaultStr(k Key, v string) error { return api.SetDefaultStr(c, k, v) }
 func (c *SpecObj) SetDefaultInt(k Key, v int) error    { return api.SetDefaultInt(c, k, v) }

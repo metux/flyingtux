@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package container is the runtime container driver used to run an app from an
 // already-built image (port of flyingtux.container). Only docker is supported,
 // as in the original.

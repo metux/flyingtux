@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package app is the flyingtux orchestration layer: the Target (top-level
 // config) and the Builder/Deploy/Runner pipeline tools (ports of
 // flyingtux.target and flyingtux.app.*).

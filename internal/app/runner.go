@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 package app
 
 import (
@@ -28,7 +30,7 @@ type Runner struct {
 // --- services.Runner interface ---
 
 func (r *Runner) Get(key string) string { return r.GetStr(spec.Key(key)) }
-func (r *Runner) IPAddress() string      { return r.ipAddress }
+func (r *Runner) IPAddress() string     { return r.ipAddress }
 
 func (r *Runner) StartWebProxy() (string, error) {
 	t := r.target

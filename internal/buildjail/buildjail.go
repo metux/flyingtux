@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package buildjail abstracts the throwaway container used to assemble an image
 // sysroot at build time (port of flyingtux.buildjail).
 package buildjail

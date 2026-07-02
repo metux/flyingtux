@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 package services
 
 import (
@@ -26,10 +28,10 @@ func newX11(sp *spec.SpecObj, r Runner) Service {
 		name: "X11", spec: sp, runner: r,
 		permDflt: map[string]bool{"__enabled__": true, "shm": true, "namespace": true},
 		setDflt: map[string]string{
-			"x11-display":         "${ENV::DISPLAY}",
-			"x11-socketdir":       "/tmp/.X11-unix",
-			"x11-namespace-bin":   "xnamespace",
-			"x11-namespace-caps":  "mouse,keyboard,shape,input",
+			"x11-display":        "${ENV::DISPLAY}",
+			"x11-socketdir":      "/tmp/.X11-unix",
+			"x11-namespace-bin":  "xnamespace",
+			"x11-namespace-caps": "mouse,keyboard,shape,input",
 		},
 	}}
 	s.self = s

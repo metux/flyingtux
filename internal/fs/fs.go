@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package fs provides the small filesystem helpers ported from the Python
 // metux.util.fs module.
 package fs

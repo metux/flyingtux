@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package log provides colored logging with microsecond inter-message timing,
 // a faithful port of the Python metux.util.log module.
 package log

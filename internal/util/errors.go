@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package util holds the flyingtux error types and small helpers ported from
 // the Python flyingtux.util and flyingtux.naming modules.
 package util
@@ -29,8 +31,12 @@ func newErr(kind ErrKind, format string, a ...any) *FTError {
 	return &FTError{Kind: kind, Msg: fmt.Sprintf(format, a...)}
 }
 
-func Error(format string, a ...any) *FTError           { return newErr(ErrGeneric, format, a...) }
-func ConfigError(format string, a ...any) *FTError     { return newErr(ErrConfig, format, a...) }
-func UnsupportedJail(format string, a ...any) *FTError  { return newErr(ErrUnsupportedJail, format, a...) }
-func UnsupportedPkg(format string, a ...any) *FTError   { return newErr(ErrUnsupportedPkg, format, a...) }
-func UnsupportedTool(format string, a ...any) *FTError  { return newErr(ErrUnsupportedTool, format, a...) }
+func Error(format string, a ...any) *FTError       { return newErr(ErrGeneric, format, a...) }
+func ConfigError(format string, a ...any) *FTError { return newErr(ErrConfig, format, a...) }
+func UnsupportedJail(format string, a ...any) *FTError {
+	return newErr(ErrUnsupportedJail, format, a...)
+}
+func UnsupportedPkg(format string, a ...any) *FTError { return newErr(ErrUnsupportedPkg, format, a...) }
+func UnsupportedTool(format string, a ...any) *FTError {
+	return newErr(ErrUnsupportedTool, format, a...)
+}

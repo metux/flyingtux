@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 package app
 
 import (
@@ -105,6 +107,8 @@ func (d *Deploy) createScript() error {
 
 // --- services.Runner (deploy only needs Get; the rest are unused in GetConf) ---
 
-func (d *Deploy) Get(key string) string         { return d.GetStr(spec.Key(key)) }
-func (d *Deploy) IPAddress() string             { return "" }
-func (d *Deploy) StartWebProxy() (string, error) { return "", util.Error("web proxy not available at deploy time") }
+func (d *Deploy) Get(key string) string { return d.GetStr(spec.Key(key)) }
+func (d *Deploy) IPAddress() string     { return "" }
+func (d *Deploy) StartWebProxy() (string, error) {
+	return "", util.Error("web proxy not available at deploy time")
+}

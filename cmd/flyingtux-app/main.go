@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Command flyingtux-app is the Go port of the flyingtux imagebuilder CLI
 // (build | run | deploy | exec | startup). Port of src/imagebuilder/flyingtux-app
 // + flyingtux.cmd.

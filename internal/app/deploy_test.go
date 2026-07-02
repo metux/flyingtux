@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 package app
 
 import (
@@ -74,11 +76,11 @@ web-proxy:
 	}
 	got := string(info)
 	for _, want := range []string{
-		"flyingtux-app-chromium_92.0.4515.107-r0",           // container name
-		"x86_64",                                             // auto-selected arch
-		"flyingtux-app-chromium-x86_64:92.0.4515.107-r0",    // resolved ROOTFS-IMAGE
-		"x11",                                                // os-services materialized
-		"user: app",                                         // ImageSpec.post_init default
+		"flyingtux-app-chromium_92.0.4515.107-r0", // container name
+		"x86_64", // auto-selected arch
+		"flyingtux-app-chromium-x86_64:92.0.4515.107-r0", // resolved ROOTFS-IMAGE
+		"x11",       // os-services materialized
+		"user: app", // ImageSpec.post_init default
 	} {
 		if !strings.Contains(got, want) {
 			t.Errorf("info.yml missing %q\n---\n%s", want, got)

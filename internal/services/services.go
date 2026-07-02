@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package services implements the pluggable OS services (x11, devices, user
 // dirs, web proxy, ...) that configure an app container's mounts, env, tmpfs,
 // options and devices (port of flyingtux.services).
@@ -115,9 +117,9 @@ func (b *base) getSetting(name string) string {
 	return b.spec.GetStr(spec.Key("settings::" + name))
 }
 
-func (b *base) addEnv(name, val string)      { b.srvEnv[name] = val }
-func (b *base) addTempdirs(dirs []string)    { b.srvTempdirs = append(b.srvTempdirs, dirs...) }
-func (b *base) addDevice(name string)        { b.devices = append(b.devices, name) }
+func (b *base) addEnv(name, val string)         { b.srvEnv[name] = val }
+func (b *base) addTempdirs(dirs []string)       { b.srvTempdirs = append(b.srvTempdirs, dirs...) }
+func (b *base) addDevice(name string)           { b.devices = append(b.devices, name) }
 func (b *base) setContainerOpt(set func(*Opts)) { set(&b.opts) }
 
 func (b *base) bindFileDirect(fn string) {

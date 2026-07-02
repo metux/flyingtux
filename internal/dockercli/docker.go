@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 // Package dockercli is a subprocess wrapper around the `docker` CLI, a faithful
 // port of the Python metux.util.docker module (Docker + DockerContainer). It
 // shells out to docker rather than using the daemon API, exactly like the
