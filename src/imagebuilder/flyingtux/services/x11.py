@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-from os_service import Base
+from .os_service import Base
 from metux.util.fs import mkdir
 from os.path import dirname
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, check_output
 from os import environ, urandom, chmod
+import re
 
 """
 Access to X11 display.
@@ -95,7 +96,7 @@ class X11(Base):
         except OSError as e:
             return 127, '', str(e)
         stdout, stderr = p.communicate()
-        return p.wait(), stdout.strip(), stderr.strip()
+        return p.wait(), stdout.decode().strip(), stderr.decode().strip()
 
     """probe whether we're allowed to see/manage X-NAMESPACE on this display at all"""
     def probe_namespace(self, display):
@@ -117,7 +118,7 @@ class X11(Base):
         if rc != 0:
             self.info("X-NAMESPACE create "+name+" failed (may already exist): "+(err or "unknown error"))
 
-        token = urandom(16).encode('hex')
+        token = urandom(16).hex()
         rc, out, err = self.run_xnamespace(display, ['addtoken', name, 'MIT-MAGIC-COOKIE-1', token])
         if rc != 0:
             self.info("X-NAMESPACE addtoken for "+name+" failed, falling back to full access: "+(err or "unknown error"))
@@ -133,5 +134,17 @@ class X11(Base):
         mkdir(dirname(fn))
         p = Popen(['xauth', '-f', fn, 'add', display, 'MIT-MAGIC-COOKIE-1', token], stdout=PIPE, stderr=PIPE)
         p.communicate()
-        chmod(fn, 0644)
+
+        # xauth just wrote a FamilyLocal entry keyed to *our* hostname. The
+        # container that reads this file has a different hostname, so a
+        # FamilyLocal lookup from inside it never matches and the client
+        # falls back to no auth data at all - silently defeating the whole
+        # point of this per-app cookie. Rewrite the family as FamilyWild
+        # (matches from any host) using the standard xauth nlist/nmerge trick.
+        nlist = check_output(['xauth', '-f', fn, 'nlist', display])
+        wild = re.sub(rb'^[0-9a-f]{4}', b'ffff', nlist)
+        p2 = Popen(['xauth', '-f', fn, 'nmerge', '-'], stdin=PIPE)
+        p2.communicate(wild)
+
+        chmod(fn, 0o644)
         return fn
