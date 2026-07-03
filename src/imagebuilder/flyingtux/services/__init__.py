@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-import os_service
+from . import os_service
 from metux.util.log import info
 from ..util import FT_ConfigError
-import x11, dev, userdir, webproxy
+from . import x11, dev, userdir, webproxy
 
 os_services = {
     'x11':            x11.X11,

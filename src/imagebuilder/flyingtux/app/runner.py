@@ -2,7 +2,7 @@
 from metux.util.log import info
 from ..container import get as container_get
 from ..services import process_os_service
-from toolbase import ToolBase
+from .toolbase import ToolBase
 from os import environ
 from os.path import basename
 from metux.util.fs import mkdir
@@ -105,7 +105,7 @@ class Runner(ToolBase):
         for v in self.get_cf_list('volumes'):
             self.mount_volume(v)
 
-        for sname,sspec in self['os-services'].iteritems():
+        for sname,sspec in self['os-services'].items():
             self.my_jail.add_params(process_os_service(sname, sspec, self))
 
         self.my_jail.add_opts({

@@ -2,11 +2,11 @@
 from metux.util.specobject import SpecObject
 from metux.util.lambdadict import LambdaDict
 from metux.util import log
-from spec import obj_types
-from app import Builder, Deploy, Runner
+from .spec import obj_types
+from .app import Builder, Deploy, Runner
 from os import getcwd, environ
 from os.path import expanduser
-from util import IpAddrMap
+from .util import IpAddrMap
 import ipaddress
 
 class Target(SpecObject):
@@ -93,7 +93,7 @@ class Target(SpecObject):
         return obj
 
     def start_network(self):
-        from container import get as container_get
+        from .container import get as container_get
         netconf = self['jail-network']
         try:
             container_get({'engine': self['jail-engine']}).network_create(

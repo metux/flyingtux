@@ -7,7 +7,7 @@ import errno
 def mkdir(dirname):
     try:
         makedirs(dirname)
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
         # time.sleep might help here

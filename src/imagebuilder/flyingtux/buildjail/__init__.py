@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-import user, docker
+from . import docker
 from ..util import FT_UnsupportedJail
 
 jail_drivers = {

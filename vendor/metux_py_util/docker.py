@@ -84,7 +84,7 @@ class Docker:
             self.cmd = 'docker'
 
     def _call_stdout(self, args):
-        return check_output([self.cmd]+args)
+        return check_output([self.cmd]+args).decode()
 
     def _call_direct(self, args):
         process = Popen([self.cmd]+args)
@@ -112,7 +112,7 @@ class Docker:
             extra_args.append(name)
 
         env_param = []
-        for n,v in env.iteritems():
+        for n,v in env.items():
             env_param.append('-e')
             env_param.append(n+'='+v)
 
@@ -128,7 +128,7 @@ class Docker:
             extra_args.append(name)
 
         env_param = []
-        for n,v in env.iteritems():
+        for n,v in env.items():
             env_param.append('-e')
             env_param.append(n+'='+v)
 
@@ -144,7 +144,7 @@ class Docker:
             extra_args.append(name)
 
         env_param = []
-        for n,v in env.iteritems():
+        for n,v in env.items():
             env_param.append('-e')
             env_param.append(n+'='+v)
 

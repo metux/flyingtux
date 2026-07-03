@@ -59,7 +59,7 @@ class ContainerDriverDocker(SpecObject):
 
     def add_opts(self, opts):
         if opts is not None:
-            for o,v in opts.iteritems():
+            for o,v in opts.items():
                 if o == 'ipc':
                     self.my_params.append('--ipc')
                     self.my_params.append(v)

@@ -96,12 +96,12 @@ class Base(SpecObject):
     def get_conf(self):
         self.prepare_conf()
 
-        for perm_name, perm_def in self.permissions.iteritems():
+        for perm_name, perm_def in self.permissions.items():
             keyname = 'permissions::'+perm_name
             if self[keyname] is None:
                 self[keyname] = perm_def['default']
 
-        for sname, sval in self.settings.iteritems():
+        for sname, sval in self.settings.items():
             keyname = 'settings::'+sname
             if self[keyname] is None:
                 self[keyname] = sval['default']

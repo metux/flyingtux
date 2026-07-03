@@ -3,7 +3,7 @@ import yaml
 from metux.util.log import info
 from metux.util.lambdadict import LambdaDict, LambdaDictFilter
 from string import Template
-from collections import MutableSequence
+from collections.abc import MutableSequence
 import re
 
 class SubstTemplate(Template):
@@ -28,7 +28,7 @@ class SpecObjectFilter(LambdaDictFilter):
         return self.subst(value)
 
     def subst(self, value):
-        if isinstance(value, basestring) or (isinstance(value, str)):
+        if isinstance(value, str):
             res = SubstTemplate.match_re.match(value.strip())
             if res is not None:
                 newkey = res.group(1)

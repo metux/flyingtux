@@ -2,7 +2,7 @@
 from metux.util.log import info
 from ..pkg import get as pkg_get
 from ..buildjail import get as buildjail_get
-from toolbase import ToolBase
+from .toolbase import ToolBase
 from shutil import rmtree
 
 class Builder(ToolBase):

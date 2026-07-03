@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 from inspect import isfunction
-from collections import Mapping, MutableSequence
+from collections.abc import Mapping, MutableSequence
 from metux.util.log import info
 import yaml
 
@@ -59,11 +59,11 @@ class LambdaDict(dict,LambdaBase):
 
     def load_dict(self, d):
         if d is not None:
-            for k,v in d.iteritems():
+            for k,v in d.items():
                 dict.__setitem__(self, k, self.filter_new_item(v))
 
     def __getitem_raw__(self, key):
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             return dict.__getitem__(self, key)
 
         if key in self.defaults:
@@ -95,16 +95,16 @@ class LambdaDict(dict,LambdaBase):
         return self.__getitem__(key.split('::'))
 
     def has_key(self, key):
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             return True
 
-        if (self.defaults.has_key(key)):
+        if (key in self.defaults):
             return True
 
         return False
 
     def __mksub(self, key):
-        if dict.has_key(self, key):
+        if dict.__contains__(self, key):
             sub = dict.__getitem__(self, key)
             if not isinstance(sub, Mapping):
                 raise Exeption("attemted to add default for a sub-dict defined as scalar")
@@ -132,7 +132,7 @@ class LambdaDict(dict,LambdaBase):
     """add a list of default values"""
     def default_addlist(self, attrs):
         if attrs is not None:
-            for key, value in attrs.iteritems():
+            for key, value in attrs.items():
                 self.default_set(key, value)
 
     """add item to the dict (not default)"""
@@ -143,7 +143,7 @@ class LambdaDict(dict,LambdaBase):
                 dict.__setitem__(self, key[0], value)
                 return
 
-            if dict.has_key(self, key[0]) and self[key[0]] is not None:
+            if dict.__contains__(self, key[0]) and self[key[0]] is not None:
                 sub = dict.__getitem__(self, key[0])
                 if not isinstance(sub, Mapping):
                     raise Exception("cant add elements to non-dict")

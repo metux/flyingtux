@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 from metux.util import log
 import subprocess
-from docker import ContainerDriverDocker
+from .docker import ContainerDriverDocker
 from ..util import FT_UnsupportedJail
 
 """

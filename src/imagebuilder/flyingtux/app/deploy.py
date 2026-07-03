@@ -5,7 +5,7 @@ from ..naming import app_container_name
 from metux.util.fs import mkdir
 from os.path import isfile, dirname
 from os import chmod
-from toolbase import ToolBase
+from .toolbase import ToolBase
 import yaml
 
 class Deploy(ToolBase):
@@ -30,7 +30,7 @@ class Deploy(ToolBase):
             f.write('sys.path.append("'+codebase+'")\n')
             f.write('from flyingtux.cmd import run_app\n')
             f.write('run_app()\n')
-        chmod(scriptname, 0755)
+        chmod(scriptname, 0o755)
 
     def create_deploy(self):
         image = self['IMAGE']
@@ -64,7 +64,7 @@ class Deploy(ToolBase):
         d['user']          = image['user']
         d['volumes']       = image['volumes']
 
-        for sname,sspec in image['os-services'].iteritems():
+        for sname,sspec in image['os-services'].items():
             d['os-services::'+sname] = get_os_service(sname, sspec, self).get_conf()
 
         with open(self.my_deploy_spec_file, 'w') as outfile:

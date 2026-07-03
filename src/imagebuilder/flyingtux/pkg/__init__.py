@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-from alpine import AlpinePkg
+from .alpine import AlpinePkg
 from ..util import FT_UnsupportedPkg
 
 drivers = {
