@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 import ipaddress
 from metux.util import log
-from os.path import normpath
+from metux.util.fs import mkdir
+from os.path import normpath, dirname
 import yaml
 
 def clean_path(path):
@@ -47,7 +48,7 @@ class bimap(dict):
             self.__delval(oldval)
 
     def update(self, d):
-        for k,v in d.iteritems():
+        for k,v in d.items():
             self[k] = v
 
 def load_bimap_yaml(fn):
@@ -59,6 +60,7 @@ def load_bimap_yaml(fn):
     return bimap()
 
 def store_bimap_yaml(bd, fn):
+    mkdir(dirname(fn))
     with open(fn, 'w') as outfile:
         yaml.dump(dict(bd), outfile, default_flow_style=False, indent=4)
 
@@ -74,7 +76,7 @@ class IpAddrMap:
         if name in self.my_ipmap:
             return self.my_ipmap[name]
 
-        for ip in ipaddress.IPv4Network(unicode(self.my_subnet)):
+        for ip in ipaddress.IPv4Network(str(self.my_subnet)):
             ips = str(ip)
 
             if ip.is_multicast or ip.is_reserved or ip.is_link_local:
