@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 from .os_service import Base
 from metux.util.fs import mkdir
+from metux.util.log import warn
 from os.path import dirname
 from subprocess import Popen, PIPE, check_output
 from os import environ, urandom, chmod
@@ -13,26 +14,15 @@ Access to X11 display.
 a nested Xserver, so app has no access to X resources of other
 applications.
 
-X-NAMESPACE (see setup_namespace() below) is a first step towards that:
-where available, the app's connection is confined to its own namespace
-instead of getting the full, unrestricted display. It's best-effort and
-optional on purpose - the extension is still DRAFT/experimental, requires
-an XLibre server built with it *and* started with a "-namespace <config>"
-granting our own connection management rights (plain QueryExtension
-already reports the extension as absent to any client without that
-privilege - there's no way to tell "not built in" apart from "built in but
-we're not privileged", and both cases must fall back the same way).
+X-NAMESPACE (see setup_namespace() below) confines the app to its own
+namespace instead of getting the full, unrestricted display. Requires an
+XLibre server with X-NAMESPACE support (merged in xserver-master as of
+2026-07-03, PR #3103) started with "-namespace <config>" granting
+management rights.
 
-Confirmed root cause (2026-07-01/02, mpbt-workspace DASHBOARD.md): stock
-xserver-master's Xext/namespace/ only wires the ACE enforcement hooks, it
-never registers X-NAMESPACE as a queryable/dispatchable protocol extension
-- that missing wire-protocol registration lives on xserver PR #3103
-(branch draft/xns-proto), not yet merged. Built from that branch, the
-extension works end-to-end: 'xnamespace -s version'/'-s list' succeed and
-go-x11proto's run-xnamespace-test.sh passes 40/40 (both byte orders). So
-today this falls back to the plain bind-mount below on every server except
-one built from draft/xns-proto; it starts paying off as soon as #3103 (or
-an equivalent) merges upstream.
+Falls back to full display access if X-NAMESPACE is unavailable (server
+too old, not built with namespace support, or lacking management
+privileges). A visible warning is printed on the console in this case.
 """
 class X11(Base):
     permissions = {
@@ -102,13 +92,19 @@ class X11(Base):
     def probe_namespace(self, display):
         rc, out, err = self.run_xnamespace(display, ['version'])
         if rc != 0:
-            self.info("X-NAMESPACE unavailable on "+display+": "+(err or "unknown error"))
+            self.info("X-NAMESPACE probe failed on "+display+": "+(err or "unknown error"))
             return False
         self.info("X-NAMESPACE present, version "+out)
         return True
 
     def setup_namespace(self, display):
         if not self.probe_namespace(display):
+            warn("=" * 60)
+            warn("X-NAMESPACE ISOLATION UNAVAILABLE")
+            warn("App '"+self.get_app_name()+"' will have FULL access to the display")
+            warn("No per-app isolation - all X11 resources are shared")
+            warn("Start server with '-namespace <config>' to enable isolation")
+            warn("=" * 60)
             return
 
         name = 'app-'+self.get_app_name()
@@ -116,12 +112,15 @@ class X11(Base):
 
         rc, out, err = self.run_xnamespace(display, ['create', name]+caps+['transient'])
         if rc != 0:
-            self.info("X-NAMESPACE create "+name+" failed (may already exist): "+(err or "unknown error"))
+            warn("X-NAMESPACE create "+name+" failed (may already exist): "+(err or "unknown error"))
+            warn("Falling back to full display access - no isolation")
+            return
 
         token = urandom(16).hex()
         rc, out, err = self.run_xnamespace(display, ['addtoken', name, 'MIT-MAGIC-COOKIE-1', token])
         if rc != 0:
-            self.info("X-NAMESPACE addtoken for "+name+" failed, falling back to full access: "+(err or "unknown error"))
+            warn("X-NAMESPACE addtoken for "+name+" failed: "+(err or "unknown error"))
+            warn("Falling back to full display access - no isolation")
             return
 
         xauth_file = self.write_xauth(display, token)
